@@ -1,0 +1,222 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace BOTACORE.CORE.Domain
+{
+   public class FinReportFilter
+    {
+//OrganizationName (Yes/No)
+//ProjectName (Yes/No)
+//Contacts  (Yes/No) (info from “Contacts, 1) -> Director’s Name/cell phone/email/address of organization/phone(in One Column Cell)
+//RequestedDate (from dd/mm/year to dd/mm/year) (Yes/No)
+//AmountRequested (Yes/No)
+//AwardedAmount (Yes/No)
+//StartDate (Yes/No)
+//EndDate (Yes/No)
+//Closedate (Yes/No)
+//TotalSiteVisits (Yes/No) (use the number from Project Info)
+
+       private System.Nullable<System.DateTime> _RequestedDateStart;
+       public System.Nullable<System.DateTime> RequestedDateStart
+       {
+           get
+           {
+               return this._RequestedDateStart;
+           }
+           set
+           {
+               if ((this._RequestedDateStart != value))
+               {
+                   this._RequestedDateStart = value;                 
+               }
+           }
+       }
+
+       private System.Nullable<System.DateTime> _RequestedDateEnd;
+       public System.Nullable<System.DateTime> RequestedDateEnd
+       {
+           get
+           {
+               return this._RequestedDateEnd;
+           }
+           set
+           {
+               if ((this._RequestedDateEnd != value))
+               {
+                   this._RequestedDateEnd = value;
+               }
+           }
+       }
+
+
+       private System.Nullable<bool> _isOrganizationName;
+       public System.Nullable<bool> isOrganizationName
+       {
+           get
+           {
+               return this._isOrganizationName;
+           }
+           set
+           {
+               if (this._isOrganizationName != value)
+               {
+                   this._isOrganizationName = value;
+                 
+               }
+           }
+       }
+
+       private System.Nullable<bool> _isContacts;
+       public System.Nullable<bool> isContacts
+       {
+           get
+           {
+               return this._isContacts;
+           }
+           set
+           {
+               if (this._isContacts != value)
+               {
+                   this._isContacts = value;
+
+               }
+           }
+       }
+
+
+       private System.Nullable<bool> _isProjectName;
+       public System.Nullable<bool> isProjectName
+       {
+           get
+           {
+               return this._isProjectName;
+           }
+           set
+           {
+               if (this._isProjectName != value)
+               {
+                   this._isProjectName = value;
+
+               }
+           }
+       }
+
+
+
+
+       private System.Nullable<bool> _isRequestedDate;
+       public System.Nullable<bool> isRequestedDate
+       {
+           get
+           {
+               return this._isRequestedDate;
+           }
+           set
+           {
+               if (this._isRequestedDate != value)
+               {
+                   this._isRequestedDate = value;
+
+               }
+           }
+       }
+
+
+
+       private System.Nullable<bool> _isAmountRequested;
+       public System.Nullable<bool> isAmountRequested
+       {
+           get
+           {
+               return this._isAmountRequested;
+           }
+           set
+           {
+               if (this._isAmountRequested != value)
+               {
+                   this._isAmountRequested = value;
+
+               }
+           }
+       }
+
+
+
+       private System.Nullable<bool> _isStartDate;
+       public System.Nullable<bool> isStartDate
+       {
+           get
+           {
+               return this._isStartDate;
+           }
+           set
+           {
+               if (this._isStartDate != value)
+               {
+                   this._isStartDate = value;
+
+               }
+           }
+       }
+
+
+
+       private System.Nullable<bool> _isEndDate;
+       public System.Nullable<bool> isEndDate
+       {
+           get
+           {
+               return this._isEndDate;
+           }
+           set
+           {
+               if (this._isEndDate != value)
+               {
+                   this._isEndDate = value;
+
+               }
+           }
+       }
+
+
+
+       private System.Nullable<bool> _isClosedate;
+       public System.Nullable<bool> isClosedate
+       {
+           get
+           {
+               return this._isClosedate;
+           }
+           set
+           {
+               if (this._isClosedate != value)
+               {
+                   this._isClosedate = value;
+
+               }
+           }
+       }
+
+       private System.Nullable<bool> _isTotalSiteVisits;
+       public System.Nullable<bool> isTotalSiteVisits
+       {
+           get
+           {
+               return this._isTotalSiteVisits;
+           }
+           set
+           {
+               if (this._isTotalSiteVisits != value)
+               {
+                   this._isTotalSiteVisits = value;
+
+               }
+           }
+       }
+
+       
+
+    }
+}

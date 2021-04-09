@@ -1,0 +1,610 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="KZBOTADB" Class="BOTADataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=wiutbook.wiut.uz\sq2008;Initial Catalog=KZBOTADB;Integrated Security=True" SettingsObjectName="BOTACORE.Properties.Settings" SettingsPropertyName="KZBOTADBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Address" Member="Addresses">
+    <Type Name="Address">
+      <Column Name="AddessID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DDIDRegion" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LegalAddress" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LocationHint" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Area" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Region" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Village" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="website" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="isLegalAddress" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Organization_Address" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="RegionList_Address" Member="RegionList" ThisKey="DDIDRegion" OtherKey="DDID" Type="RegionList" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TheKey" Member="TheKeys">
+    <Type Name="TheKey">
+      <Column Name="KeyID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="KeyName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Project_TheKey" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BankInfo" Member="BankInfos">
+    <Type Name="BankInfo">
+      <Column Name="BankInfoID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BankType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Address1" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Address2" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="State" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Zip" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BankName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="AccountNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SortCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Correspond" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ABASwift" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="bank" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="swift" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TIN" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Lang" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Project_BankInfo" Member="Project" ThisKey="BankInfoID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BeingEditedByUser" Member="BeingEditedByUsers">
+    <Type Name="BeingEditedByUser">
+      <Column Name="TableName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PrimaryKeyFieldName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PrimaryKey" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Budget" Member="Budgets">
+    <Type Name="Budget">
+      <Column Name="BudgetID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ContractInitialAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InfoBox" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="Budget_FinArticleCategory" Member="FinArticleCategories" ThisKey="BudgetID" OtherKey="BudgetID" Type="FinArticleCategory" />
+      <Association Name="Budget_FinArticleCategoryR" Member="FinArticleCategoryRs" ThisKey="BudgetID" OtherKey="BudgetID" Type="FinArticleCategoryR" />
+      <Association Name="Budget_ReportPeriodList" Member="ReportPeriodLists" ThisKey="BudgetID" OtherKey="BudgetID" Type="ReportPeriodList" />
+      <Association Name="Budget_ReportPeriodListR" Member="ReportPeriodListRs" ThisKey="BudgetID" OtherKey="BudgetID" Type="ReportPeriodListR" />
+      <Association Name="Project_Budget" Member="Project" ThisKey="BudgetID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompetitionCode" Member="CompetitionCodes">
+    <Type Name="CompetitionCode">
+      <Column Name="CompetCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SelectedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="CompetitionCodeList_CompetitionCode" Member="CompetitionCodeList" ThisKey="CompetCodeID" OtherKey="CompetitionCodeID" Type="CompetitionCodeList" IsForeignKey="true" />
+      <Association Name="Project_CompetitionCode" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CompetitionCodeList" Member="CompetitionCodeLists">
+    <Type Name="CompetitionCodeList">
+      <Column Name="CompetitionCodeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodeText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="CompetitionCodeList_CompetitionCode" Member="CompetitionCodes" ThisKey="CompetitionCodeID" OtherKey="CompetCodeID" Type="CompetitionCode" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Contact" Member="Contacts">
+    <Type Name="Contact">
+      <Column Name="ContactID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Prefix" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="EmailAddress" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="OfficePhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="HomePhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CellPhone" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FaxNumber" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="County" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Organization_Contact" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EventFieldMapper" Member="EventFieldMappers">
+    <Type Name="EventFieldMapper">
+      <Column Name="MapperID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DBFIELD" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DOCFIELD" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TABLENAME" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EventType" Member="EventTypes">
+    <Type Name="EventType">
+      <Column Name="EventTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EventTypeName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="EventType_ProjectEvent" Member="ProjectEvents" ThisKey="EventTypeID" OtherKey="EventTypeID" Type="ProjectEvent" />
+      <Association Name="EventType_TemplateDocument" Member="TemplateDocuments" ThisKey="EventTypeID" OtherKey="EventTypeID" Type="TemplateDocument" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FinancialArticle" Member="FinancialArticles">
+    <Type Name="FinancialArticle">
+      <Column Name="FinArticleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BudgetID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FinArticleCatID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Amt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Times" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TimePeriod" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GranteeInput" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonorInput" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Info" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="TransferAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FinancialArticle_ReportPeriod" Member="ReportPeriods" ThisKey="FinArticleID" OtherKey="FinArticleID" Type="ReportPeriod" />
+      <Association Name="FinArticleCategory_FinancialArticle" Member="FinArticleCategory" ThisKey="BudgetID,FinArticleCatID" OtherKey="BudgetID,FinArticleCatID" Type="FinArticleCategory" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FinArtCatList" Member="FinArtCatLists">
+    <Type Name="FinArtCatList">
+      <Column Name="FinArticleCatID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FinArticleCatName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Association Name="FinArtCatList_FinArticleCategory" Member="FinArticleCategories" ThisKey="FinArticleCatID" OtherKey="FinArticleCatID" Type="FinArticleCategory" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FinArtCatListR" Member="FinArtCatListRs">
+    <Type Name="FinArtCatListR">
+      <Column Name="FinArticleCatListID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FinArticleCatName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FinArticleCategory" Member="FinArticleCategories">
+    <Type Name="FinArticleCategory">
+      <Column Name="BudgetID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FinArticleCatID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="FinArticleCategory_FinancialArticle" Member="FinancialArticles" ThisKey="BudgetID,FinArticleCatID" OtherKey="BudgetID,FinArticleCatID" Type="FinancialArticle" />
+      <Association Name="Budget_FinArticleCategory" Member="Budget" ThisKey="BudgetID" OtherKey="BudgetID" Type="Budget" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="FinArtCatList_FinArticleCategory" Member="FinArtCatList" ThisKey="FinArticleCatID" OtherKey="FinArticleCatID" Type="FinArtCatList" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FinArticleCategoryR" Member="FinArticleCategoryRs">
+    <Type Name="FinArticleCategoryR">
+      <Column Name="FinArticleCatID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BudgetID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FinArticleCatText" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TransferAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FinArticleCategoryR_ReportPeriodR" Member="ReportPeriodRs" ThisKey="FinArticleCatID" OtherKey="FinArticleCatID" Type="ReportPeriodR" />
+      <Association Name="FinArticleCategoryR_ReportPeriodR1" Member="ReportPeriodRs1" ThisKey="FinArticleCatID" OtherKey="FinArticleCatID" Type="ReportPeriodR" />
+      <Association Name="Budget_FinArticleCategoryR" Member="Budget" ThisKey="BudgetID" OtherKey="BudgetID" Type="Budget" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FundingOrganization" Member="FundingOrganizations">
+    <Type Name="FundingOrganization">
+      <Column Name="FundingSourceOrgID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FundingOrgName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="FundingOrgDescription" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="FundingOrganization_FundingSource" Member="FundingSources" ThisKey="FundingSourceOrgID" OtherKey="FundingSourceOrgID" Type="FundingSource" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FundingSource" Member="FundingSources">
+    <Type Name="FundingSource">
+      <Column Name="FundingSourceID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FundingSourceOrgID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CashAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InKindAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InKindAmountInfo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="FundingOrganization_FundingSource" Member="FundingOrganization" ThisKey="FundingSourceOrgID" OtherKey="FundingSourceOrgID" Type="FundingOrganization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Project_FundingSource" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.General" Member="Generals">
+    <Type Name="General">
+      <Column Name="OrgID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FiscalYearEnd" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="NameRu" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Association Name="Organization_General" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GrantType" Member="GrantTypes">
+    <Type Name="GrantType">
+      <Column Name="GrantTypeCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SelectedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="GrantTypeList_GrantType" Member="GrantTypeList" ThisKey="GrantTypeCodeID" OtherKey="GrantTypeCodeID" Type="GrantTypeList" IsForeignKey="true" />
+      <Association Name="Project_GrantType" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GrantTypeList" Member="GrantTypeLists">
+    <Type Name="GrantTypeList">
+      <Column Name="GrantTypeCodeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GrantTypeText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="GrantTypeList_GrantType" Member="GrantTypes" ThisKey="GrantTypeCodeID" OtherKey="GrantTypeCodeID" Type="GrantType" />
+      <Association Name="GrantTypeList_IndicatorCategoryLabel" Member="IndicatorCategoryLabels" ThisKey="GrantTypeCodeID" OtherKey="GrantTypeCodeID" Type="IndicatorCategoryLabel" />
+      <Association Name="GrantTypeList_IndicatorLabel" Member="IndicatorLabels" ThisKey="GrantTypeCodeID" OtherKey="GrantTypeCodeID" Type="IndicatorLabel" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Indicator" Member="Indicators">
+    <Type Name="Indicator">
+      <Column Name="IndicatorID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IndicatorName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Indicator_IndicatorItem" Member="IndicatorItems" ThisKey="IndicatorID" OtherKey="IndicatorID" Type="IndicatorItem" />
+      <Association Name="Project_Indicator" Member="Project" ThisKey="IndicatorID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IndicatorCategoryLabel" Member="IndicatorCategoryLabels">
+    <Type Name="IndicatorCategoryLabel">
+      <Column Name="IndicatorCategoryLabelID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GrantTypeCodeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CountTotal" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="IndicatorCategoryLabel_IndicatorItem" Member="IndicatorItems" ThisKey="IndicatorCategoryLabelID" OtherKey="IndicatorCategoryLabelID" Type="IndicatorItem" />
+      <Association Name="IndicatorCategoryLabel_IndicatorTemplateItem" Member="IndicatorTemplateItems" ThisKey="IndicatorCategoryLabelID" OtherKey="IndicatorCategoryLabelID" Type="IndicatorTemplateItem" />
+      <Association Name="GrantTypeList_IndicatorCategoryLabel" Member="GrantTypeList" ThisKey="GrantTypeCodeID" OtherKey="GrantTypeCodeID" Type="GrantTypeList" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IndicatorItem" Member="IndicatorItems">
+    <Type Name="IndicatorItem">
+      <Column Name="IndicatorItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IndicatorCategoryLabelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IndicatorLabelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IndicatorID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Baseline" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Benchmark" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Final" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Indicator_IndicatorItem" Member="Indicator" ThisKey="IndicatorID" OtherKey="IndicatorID" Type="Indicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="IndicatorCategoryLabel_IndicatorItem" Member="IndicatorCategoryLabel" ThisKey="IndicatorCategoryLabelID" OtherKey="IndicatorCategoryLabelID" Type="IndicatorCategoryLabel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="IndicatorLabel_IndicatorItem" Member="IndicatorLabel" ThisKey="IndicatorLabelID" OtherKey="IndicatorLabelID" Type="IndicatorLabel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IndicatorLabel" Member="IndicatorLabels">
+    <Type Name="IndicatorLabel">
+      <Column Name="IndicatorLabelID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GrantTypeCodeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Text" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Association Name="IndicatorLabel_IndicatorItem" Member="IndicatorItems" ThisKey="IndicatorLabelID" OtherKey="IndicatorLabelID" Type="IndicatorItem" />
+      <Association Name="IndicatorLabel_IndicatorTemplateItem" Member="IndicatorTemplateItems" ThisKey="IndicatorLabelID" OtherKey="IndicatorLabelID" Type="IndicatorTemplateItem" />
+      <Association Name="GrantTypeList_IndicatorLabel" Member="GrantTypeList" ThisKey="GrantTypeCodeID" OtherKey="GrantTypeCodeID" Type="GrantTypeList" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IndicatorTemplateItem" Member="IndicatorTemplateItems">
+    <Type Name="IndicatorTemplateItem">
+      <Column Name="IndicatorTemplateItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IndicatorCategoryLabelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IndicatorLabelID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Baseline" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Benchmark" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Final" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="IndicatorCategoryLabel_IndicatorTemplateItem" Member="IndicatorCategoryLabel" ThisKey="IndicatorCategoryLabelID" OtherKey="IndicatorCategoryLabelID" Type="IndicatorCategoryLabel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="IndicatorLabel_IndicatorTemplateItem" Member="IndicatorLabel" ThisKey="IndicatorLabelID" OtherKey="IndicatorLabelID" Type="IndicatorLabel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LegalStatus" Member="LegalStatus">
+    <Type Name="LegalStatus">
+      <Column Name="OrgID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LegSListID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SelectedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="LegalStatusList_LegalStatus" Member="LegalStatusList" ThisKey="LegSListID" OtherKey="LegStatListID" Type="LegalStatusList" IsForeignKey="true" />
+      <Association Name="Organization_LegalStatus" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LegalStatusList" Member="LegalStatusLists">
+    <Type Name="LegalStatusList">
+      <Column Name="LegStatListID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LegName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="LegalStatusList_LegalStatus" Member="LegalStatus" ThisKey="LegStatListID" OtherKey="LegSListID" Type="LegalStatus" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Organization" Member="Organizations">
+    <Type Name="Organization">
+      <Column Name="OrgID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Organization_Address" Member="Addresses" ThisKey="OrgID" OtherKey="OrgID" Type="Address" />
+      <Association Name="Organization_Contact" Member="Contacts" ThisKey="OrgID" OtherKey="OrgID" Type="Contact" />
+      <Association Name="Organization_General" Member="General" ThisKey="OrgID" OtherKey="OrgID" Type="General" Cardinality="One" />
+      <Association Name="Organization_LegalStatus" Member="LegalStatus" ThisKey="OrgID" OtherKey="OrgID" Type="LegalStatus" Cardinality="One" />
+      <Association Name="Organization_OrganizationStaff" Member="OrganizationStaffs" ThisKey="OrgID" OtherKey="OrgID" Type="OrganizationStaff" />
+      <Association Name="Organization_OtherFunder" Member="OtherFunders" ThisKey="OrgID" OtherKey="OrgID" Type="OtherFunder" />
+      <Association Name="Organization_Project" Member="Projects" ThisKey="OrgID" OtherKey="OrgID" Type="Project" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrganizationStaff" Member="OrganizationStaffs">
+    <Type Name="OrganizationStaff">
+      <Column Name="StaffID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RoleID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MiddleName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Organization_OrganizationStaff" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Role_OrganizationStaff" Member="Role" ThisKey="RoleID" OtherKey="RoleID" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OtherFunders" Member="OtherFunders">
+    <Type Name="OtherFunder">
+      <Column Name="OtherFundID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DonorName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="ProjectName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FundedYear" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContactPerson" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="Organization_OtherFunder" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OutComeStatements" Member="OutComeStatements">
+    <Type Name="OutComeStatement">
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="OutcomeR" Type="System.String" DbType="NVarChar(700)" CanBeNull="true" />
+      <Column Name="OutcomeE" Type="System.String" DbType="NVarChar(700)" CanBeNull="true" />
+      <Column Name="OutcomeK" Type="System.String" DbType="NVarChar(700)" CanBeNull="true" />
+      <Association Name="Project_OutComeStatement" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Permission" Member="Permissions">
+    <Type Name="Permission">
+      <Column Name="PermissionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PermissionName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PermissionType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Permission_Permission1" Member="Permission1s" ThisKey="PermissionID" OtherKey="PermissionID" Type="Permission1" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Permissions" Member="Permission1s">
+    <Type Name="Permission1">
+      <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PermissionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Permission_Permission1" Member="Permission" ThisKey="PermissionID" OtherKey="PermissionID" Type="Permission" IsForeignKey="true" />
+      <Association Name="RolesSSPStaff_Permission1" Member="RolesSSPStaff" ThisKey="RoleID" OtherKey="RoleID" Type="RolesSSPStaff" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProgramArea" Member="ProgramAreas">
+    <Type Name="ProgramArea">
+      <Column Name="ProgramAreaCodeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SelectedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ProgramAreaList_ProgramArea" Member="ProgramAreaList" ThisKey="ProgramAreaCodeID" OtherKey="ProgramAreaCodeID" Type="ProgramAreaList" IsForeignKey="true" />
+      <Association Name="Project_ProgramArea" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProgramAreaList" Member="ProgramAreaLists">
+    <Type Name="ProgramAreaList">
+      <Column Name="ProgramAreaCodeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProgramAreaText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="ProgramAreaList_ProgramArea" Member="ProgramAreas" ThisKey="ProgramAreaCodeID" OtherKey="ProgramAreaCodeID" Type="ProgramArea" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectEvent" Member="ProjectEvents">
+    <Type Name="ProjectEvent">
+      <Column Name="EventID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EventTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EventStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EventDescription" Type="System.String" DbType="NVarChar(3000)" CanBeNull="true" />
+      <Column Name="SSPOrGrantee" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="EventHolderID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ScheduledDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CompletedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ReportPeriodID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ReportStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="ProjectEvent_ProjectEventDoc" Member="ProjectEventDocs" ThisKey="EventID" OtherKey="EventID" Type="ProjectEventDoc" />
+      <Association Name="EventType_ProjectEvent" Member="EventType" ThisKey="EventTypeID" OtherKey="EventTypeID" Type="EventType" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Project_ProjectEvent" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectEventDocs" Member="ProjectEventDocs">
+    <Type Name="ProjectEventDoc">
+      <Column Name="EventID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProjectEventDocumentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="ProjectEvent_ProjectEventDoc" Member="ProjectEvent" ThisKey="EventID" OtherKey="EventID" Type="ProjectEvent" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ProjectEventDocument_ProjectEventDoc" Member="ProjectEventDocument" ThisKey="ProjectEventDocumentID" OtherKey="ProjectEventDocumentID" Type="ProjectEventDocument" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectEventDocument" Member="ProjectEventDocuments">
+    <Type Name="ProjectEventDocument">
+      <Column Name="ProjectEventDocumentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="PhysicalVirtualPath" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="PhysicalAbsolutePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="WebVirtualPath" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="WebAbsolutePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="fileextension" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Author" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="TemplateName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Association Name="ProjectEventDocument_ProjectEventDoc" Member="ProjectEventDocs" ThisKey="ProjectEventDocumentID" OtherKey="ProjectEventDocumentID" Type="ProjectEventDoc" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectInfo" Member="ProjectInfos">
+    <Type Name="ProjectInfo">
+      <Column Name="ProjectInfoID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AmtRequested" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AwardedAmt" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AcceptedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ClosedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Project_ProjectInfo" Member="Project" ThisKey="ProjectInfoID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProjectLocation" Member="ProjectLocations">
+    <Type Name="ProjectLocation">
+      <Column Name="ProjectLocationID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Country" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="City" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Region" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Village" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Project_ProjectLocation" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Projects" Member="Projects">
+    <Type Name="Project">
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OrgID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Label" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="isDeleted" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Project_TheKey" Member="TheKeys" ThisKey="ProjectID" OtherKey="ProjectID" Type="TheKey" />
+      <Association Name="Project_BankInfo" Member="BankInfo" ThisKey="ProjectID" OtherKey="BankInfoID" Type="BankInfo" Cardinality="One" />
+      <Association Name="Project_Budget" Member="Budget" ThisKey="ProjectID" OtherKey="BudgetID" Type="Budget" Cardinality="One" />
+      <Association Name="Project_CompetitionCode" Member="CompetitionCode" ThisKey="ProjectID" OtherKey="ProjectID" Type="CompetitionCode" Cardinality="One" />
+      <Association Name="Project_FundingSource" Member="FundingSources" ThisKey="ProjectID" OtherKey="ProjectID" Type="FundingSource" />
+      <Association Name="Project_GrantType" Member="GrantType" ThisKey="ProjectID" OtherKey="ProjectID" Type="GrantType" Cardinality="One" />
+      <Association Name="Project_Indicator" Member="Indicator" ThisKey="ProjectID" OtherKey="IndicatorID" Type="Indicator" Cardinality="One" />
+      <Association Name="Project_OutComeStatement" Member="OutComeStatement" ThisKey="ProjectID" OtherKey="ProjectID" Type="OutComeStatement" Cardinality="One" />
+      <Association Name="Project_ProgramArea" Member="ProgramArea" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProgramArea" Cardinality="One" />
+      <Association Name="Project_ProjectEvent" Member="ProjectEvents" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProjectEvent" />
+      <Association Name="Project_ProjectInfo" Member="ProjectInfo" ThisKey="ProjectID" OtherKey="ProjectInfoID" Type="ProjectInfo" Cardinality="One" />
+      <Association Name="Project_ProjectLocation" Member="ProjectLocations" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProjectLocation" />
+      <Association Name="Project_ProposalInfo" Member="ProposalInfo" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProposalInfo" Cardinality="One" />
+      <Association Name="Project_ProposalStatus" Member="ProposalStatus" ThisKey="ProjectID" OtherKey="ProjectID" Type="ProposalStatus" Cardinality="One" />
+      <Association Name="Project_SSPStaffProject" Member="SSPStaffProjects" ThisKey="ProjectID" OtherKey="ProjectID" Type="SSPStaffProject" />
+      <Association Name="Organization_Project" Member="Organization" ThisKey="OrgID" OtherKey="OrgID" Type="Organization" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProposalInfo" Member="ProposalInfos">
+    <Type Name="ProposalInfo">
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RequestDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TitleR" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="TitleE" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="PubStatementR" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+      <Column Name="PubStatementE" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+      <Column Name="PubStatementK" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+      <Association Name="Project_ProposalInfo" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProposalStatus" Member="ProposalStatus">
+    <Type Name="ProposalStatus">
+      <Column Name="PropStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SelectedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Project_ProposalStatus" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ProposalStatusList_ProposalStatus" Member="ProposalStatusList" ThisKey="PropStatusID" OtherKey="ProposalStatusID" Type="ProposalStatusList" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProposalStatusList" Member="ProposalStatusLists">
+    <Type Name="ProposalStatusList">
+      <Column Name="ProposalStatusID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProposalStatusText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="ProposalStatusList_ProposalStatus" Member="ProposalStatus" ThisKey="ProposalStatusID" OtherKey="PropStatusID" Type="ProposalStatus" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RegionList" Member="RegionLists">
+    <Type Name="RegionList">
+      <Column Name="DDID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DDNAME" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Association Name="RegionList_Address" Member="Addresses" ThisKey="DDID" OtherKey="DDIDRegion" Type="Address" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportPeriod" Member="ReportPeriods">
+    <Type Name="ReportPeriod">
+      <Column Name="ReportPeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FinArticleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FinancialArticle_ReportPeriod" Member="FinancialArticle" ThisKey="FinArticleID" OtherKey="FinArticleID" Type="FinancialArticle" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ReportPeriodList_ReportPeriod" Member="ReportPeriodList" ThisKey="ReportPeriodID" OtherKey="ReportPeriodID" Type="ReportPeriodList" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportPeriodList" Member="ReportPeriodLists">
+    <Type Name="ReportPeriodList">
+      <Column Name="ReportPeriodID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BudgetID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PeriodStart" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PeriodEnd" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaymentStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PeriodTitle" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="ReportPeriodList_ReportPeriod" Member="ReportPeriods" ThisKey="ReportPeriodID" OtherKey="ReportPeriodID" Type="ReportPeriod" />
+      <Association Name="Budget_ReportPeriodList" Member="Budget" ThisKey="BudgetID" OtherKey="BudgetID" Type="Budget" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportPeriodListR" Member="ReportPeriodListRs">
+    <Type Name="ReportPeriodListR">
+      <Column Name="ReportPeriodID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BudgetID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PeriodStart" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PeriodEnd" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaymentStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PeriodTitle" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="ReportPeriodListR_ReportPeriodR" Member="ReportPeriodRs" ThisKey="ReportPeriodID" OtherKey="ReportPeriodID" Type="ReportPeriodR" />
+      <Association Name="Budget_ReportPeriodListR" Member="Budget" ThisKey="BudgetID" OtherKey="BudgetID" Type="Budget" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportPeriodR" Member="ReportPeriodRs">
+    <Type Name="ReportPeriodR">
+      <Column Name="ReportPeriodID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FinArticleCatID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FinArticleCategoryR_ReportPeriodR" Member="FinArticleCategoryR" ThisKey="FinArticleCatID" OtherKey="FinArticleCatID" Type="FinArticleCategoryR" IsForeignKey="true" />
+      <Association Name="FinArticleCategoryR_ReportPeriodR1" Member="FinArticleCategoryR1" ThisKey="FinArticleCatID" OtherKey="FinArticleCatID" Type="FinArticleCategoryR" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ReportPeriodListR_ReportPeriodR" Member="ReportPeriodListR" ThisKey="ReportPeriodID" OtherKey="ReportPeriodID" Type="ReportPeriodListR" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Roles" Member="Roles">
+    <Type Name="Role">
+      <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleTitle" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Role_OrganizationStaff" Member="OrganizationStaffs" ThisKey="RoleID" OtherKey="RoleID" Type="OrganizationStaff" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RolesSSPStaff" Member="RolesSSPStaffs">
+    <Type Name="RolesSSPStaff">
+      <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="RoleNumeric" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="RolesSSPStaff_Permission1" Member="Permission1s" ThisKey="RoleID" OtherKey="RoleID" Type="Permission1" />
+      <Association Name="RolesSSPStaff_SSPStaff" Member="SSPStaffs" ThisKey="RoleID" OtherKey="RoleID" Type="SSPStaff" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SSPStaff" Member="SSPStaffs">
+    <Type Name="SSPStaff">
+      <Column Name="SSPStaffID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="SSPStaff_SSPStaffProject" Member="SSPStaffProjects" ThisKey="SSPStaffID" OtherKey="SSPStaffID" Type="SSPStaffProject" />
+      <Association Name="RolesSSPStaff_SSPStaff" Member="RolesSSPStaff" ThisKey="RoleID" OtherKey="RoleID" Type="RolesSSPStaff" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SSPStaffProjects" Member="SSPStaffProjects">
+    <Type Name="SSPStaffProject">
+      <Column Name="SSPStaffID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Project_SSPStaffProject" Member="Project" ThisKey="ProjectID" OtherKey="ProjectID" Type="Project" IsForeignKey="true" />
+      <Association Name="SSPStaff_SSPStaffProject" Member="SSPStaff" ThisKey="SSPStaffID" OtherKey="SSPStaffID" Type="SSPStaff" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TemplateDocument" Member="TemplateDocuments">
+    <Type Name="TemplateDocument">
+      <Column Name="TemplateDocsID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TemplateDocName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="EventTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TemplateDocument_TemplateFile" Member="TemplateFile" ThisKey="TemplateDocsID" OtherKey="TemplateFileID" Type="TemplateFile" Cardinality="One" />
+      <Association Name="EventType_TemplateDocument" Member="EventType" ThisKey="EventTypeID" OtherKey="EventTypeID" Type="EventType" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TemplateFile" Member="TemplateFiles">
+    <Type Name="TemplateFile">
+      <Column Name="TemplateFileID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FileName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="PhysicalVirtualPath" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="PhysicalAbsolutePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="WebVirtualPath" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="WebAbsolutePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="fileextension" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Author" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="TemplateDocument_TemplateFile" Member="TemplateDocument" ThisKey="TemplateFileID" OtherKey="TemplateDocsID" Type="TemplateDocument" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+</Database>

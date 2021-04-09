@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5F3B14AF-B19B-4E32-8CDC-F19447DA751B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BOTACORE</RootNamespace>
+    <AssemblyName>BOTACORE</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.7.1\lib\net45\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CORE\DataAccess\DAL\ISqlCommands.cs" />
+    <Compile Include="CORE\DataAccess\DAL\SqlCommands.cs" />
+    <Compile Include="CORE\DataAccess\DAL\SqlHelper.cs" />
+    <Compile Include="CORE\DataAccess\IAccountRepository.cs" />
+    <Compile Include="CORE\DataAccess\IEventTypeRepository.cs" />
+    <Compile Include="CORE\DataAccess\IGrantTypeListRepository.cs" />
+    <Compile Include="CORE\DataAccess\IIndicatorRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\AccountRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\AccountTestRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\AppDropDownsRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\BudgetRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\Connection.cs" />
+    <Compile Include="CORE\DataAccess\Impl\EventTypeRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\GrantTypeListRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\IndicatorRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\IProjectRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\Log.cs" />
+    <Compile Include="CORE\DataAccess\Impl\LReportsRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\OrganizationRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\PredicateBuilder.cs" />
+    <Compile Include="CORE\DataAccess\Impl\ProjectEventRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\ProjectRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\ProposalRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\ReportPredicates.cs" />
+    <Compile Include="CORE\DataAccess\Impl\ReportsDataContext.cs" />
+    <Compile Include="CORE\DataAccess\Impl\ReportsRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\SSPStaffRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\TemplateRepository.cs" />
+    <Compile Include="CORE\DataAccess\Impl\UserActionLogRep.cs" />
+    <Compile Include="CORE\DataAccess\IOrganizationRepository.cs" />
+    <Compile Include="CORE\DataAccess\IProjectEventRepository.cs" />
+    <Compile Include="CORE\DataAccess\IProposalRepository.cs" />
+    <Compile Include="CORE\DataAccess\IReportsRepository.cs" />
+    <Compile Include="CORE\DataAccess\ISSPStaffRepository.cs" />
+    <Compile Include="CORE\DataAccess\ITemplateRepository.cs" />
+    <Compile Include="CORE\Domain\AccessLevelEnum.cs" />
+    <Compile Include="CORE\Domain\Account.cs" />
+    <Compile Include="CORE\Domain\BaseEntity.cs" />
+    <Compile Include="CORE\Domain\BOTA.designer.cs" />
+    <Compile Include="CORE\Domain\CryptBase.cs" />
+    <Compile Include="CORE\Domain\FinReportFilter.cs" />
+    <Compile Include="CORE\Domain\FundingSource.cs" />
+    <Compile Include="CORE\Domain\GrantTypeList.cs" />
+    <Compile Include="CORE\Domain\IOptions.cs" />
+    <Compile Include="CORE\Domain\LegalStatus.cs" />
+    <Compile Include="CORE\Domain\Organization.cs" />
+    <Compile Include="CORE\Domain\Permission.cs" />
+    <Compile Include="CORE\Domain\Project.cs" />
+    <Compile Include="CORE\Domain\ProjectInfo.cs" />
+    <Compile Include="CORE\Domain\ProjectLocation.cs" />
+    <Compile Include="CORE\Domain\Proposal.cs" />
+    <Compile Include="CORE\Domain\ProposalInfo.cs" />
+    <Compile Include="CORE\Domain\RecycleBin.cs" />
+    <Compile Include="CORE\Domain\Report.cs" />
+    <Compile Include="CORE\Domain\ReportStructs.cs" />
+    <Compile Include="CORE\Domain\Role.cs" />
+    <Compile Include="CORE\Domain\ViewEntity.cs" />
+    <Compile Include="CORE\Factory\RepositoryFactory.cs" />
+    <Compile Include="CORE\Factory\ServiceFactory.cs" />
+    <Compile Include="CORE\Factory\SqlFactory.cs" />
+    <Compile Include="CORE\Helpers\AccessLevelConvert.cs" />
+    <Compile Include="CORE\Helpers\Dereference.cs" />
+    <Compile Include="CORE\Services\IAccountService.cs" />
+    <Compile Include="CORE\Services\IConfiguration.cs" />
+    <Compile Include="CORE\Services\ICryptService.cs" />
+    <Compile Include="CORE\Services\IEventTypeService.cs" />
+    <Compile Include="CORE\Services\IGrantTypeListService.cs" />
+    <Compile Include="CORE\Services\IHelloWorld.cs" />
+    <Compile Include="CORE\Services\IIndicatorService.cs" />
+    <Compile Include="CORE\Services\Impl\AccountService.cs" />
+    <Compile Include="CORE\Services\Impl\AggregateViewHolder.cs" />
+    <Compile Include="CORE\Services\Impl\AppDropDownsService.cs" />
+    <Compile Include="CORE\Services\Impl\BudgetAggregateService.cs" />
+    <Compile Include="CORE\Services\Impl\BudgetPaymentReportService.cs" />
+    <Compile Include="CORE\Services\Impl\BudgetService.cs" />
+    <Compile Include="CORE\Services\Impl\Configuration.cs" />
+    <Compile Include="CORE\Services\Impl\CryptService.cs" />
+    <Compile Include="CORE\Services\Impl\EventTypeService.cs" />
+    <Compile Include="CORE\Services\Impl\FinanceAggregateService.cs" />
+    <Compile Include="CORE\Services\Impl\FinanceResults.cs" />
+    <Compile Include="CORE\Services\Impl\GrantTypeListService.cs" />
+    <Compile Include="CORE\Services\Impl\HelloWorldPrinter.cs" />
+    <Compile Include="CORE\Services\Impl\HelloWorldPrinter2.cs" />
+    <Compile Include="CORE\Services\Impl\IndicatorService.cs" />
+    <Compile Include="CORE\Services\Impl\Log.cs" />
+    <Compile Include="CORE\Services\Impl\OrganizationService.cs" />
+    <Compile Include="CORE\Services\Impl\PaymentReportService.cs" />
+    <Compile Include="CORE\Services\Impl\ProjectEventService.cs" />
+    <Compile Include="CORE\Services\Impl\ProjectService.cs" />
+    <Compile Include="CORE\Services\Impl\ProposalService.cs" />
+    <Compile Include="CORE\Services\Impl\Redirector.cs" />
+    <Compile Include="CORE\Services\Impl\ReportService.cs" />
+    <Compile Include="CORE\Services\Impl\SSPStaffService.cs" />
+    <Compile Include="CORE\Services\Impl\TemplateService.cs" />
+    <Compile Include="CORE\Services\Impl\UserActionLogService.cs" />
+    <Compile Include="CORE\Services\Impl\UserSession.cs" />
+    <Compile Include="CORE\Services\Impl\WebContext.cs" />
+    <Compile Include="CORE\Services\Impl\WordTemplateService.cs" />
+    <Compile Include="CORE\Services\IOrganizationService.cs" />
+    <Compile Include="CORE\Services\IProjectEventService.cs" />
+    <Compile Include="CORE\Services\IProposalService.cs" />
+    <Compile Include="CORE\Services\IRedirector.cs" />
+    <Compile Include="CORE\Services\IReportService.cs" />
+    <Compile Include="CORE\Services\ISSPStaffService.cs" />
+    <Compile Include="CORE\Services\ITemplateService.cs" />
+    <Compile Include="CORE\Services\IUserSession.cs" />
+    <Compile Include="CORE\Services\IWebContext.cs" />
+    <Compile Include="CORE\Services\IWordTemplateService.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings11.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings1.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="CORE\DataAccess\Impl\Repository.cd" />
+    <None Include="CORE\Domain\BOTA.dbml" />
+    <None Include="CORE\Domain\BOTA.dbml.layout" />
+    <None Include="CORE\Services\Impl\Services.cd" />
+    <None Include="packages.config" />
+    <None Include="Settings1.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings11.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CORE\DataAccess\DAL\SQL QUERIES.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

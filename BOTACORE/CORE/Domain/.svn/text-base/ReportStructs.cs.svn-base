@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace BOTACORE.CORE.Domain
+{
+    public class RequestedAndAwardedAmountStruct
+    {
+        public string Region { get; set; }
+        public int NumberofAllProjects { get; set; }
+        public int NumberofActiveProjects { get; set; }
+        public int NumberofProposals { get; set; }
+        public int RequestedAmt { get; set; }
+        public int AwarderAmt { get; set; }
+    }
+
+    public class RequestedAmountByX
+    {
+        public string Type { get; set; }
+        public int Amount { get; set; }
+        public int Average { get; set; }
+        public int MinimumAmount { get; set; }
+        public int MaximumAmount { get; set; }
+        public int NumberOfGrants { get; set; }
+    }
+
+
+}

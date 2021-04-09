@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/DBMANAGER/!svn/ver/214/BOTACORE/CORE/CORE/Factory
+END
+RepositoryFactory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/DBMANAGER/!svn/ver/214/BOTACORE/CORE/CORE/Factory/RepositoryFactory.cs
+END
+SqlFactory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Factory/SqlFactory.cs
+END
+ServiceFactory.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/DBMANAGER/!svn/ver/65/BOTACORE/CORE/CORE/Factory/ServiceFactory.cs
+END

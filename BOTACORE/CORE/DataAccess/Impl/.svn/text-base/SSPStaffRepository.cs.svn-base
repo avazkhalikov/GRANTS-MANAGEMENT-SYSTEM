@@ -1,0 +1,257 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using BOTACORE.CORE.Domain;
+using StructureMap;
+using System.Data.Linq;
+
+namespace BOTACORE.CORE.DataAccess.Impl
+{
+    public class SSPStaffRepository:ISSPStaffRepository
+    {
+       private string connectString;
+       public SSPStaffRepository()
+       {
+            //string connString = Settings.Default.EntityConnection; 
+          //  Context = new BOTADBEntities1();
+           Connection conn = new Connection();
+           connectString = conn.GetDirectConnString();
+       
+       }
+
+
+      public bool DeleteSSPAccount(int SSPStaffID)
+      {
+            BOTADataContext db = new BOTADataContext(connectString);
+
+            bool result = true;
+
+            try
+            {
+                var toDelete = (from s in db.SSPStaffs
+                                where s.SSPStaffID == SSPStaffID
+                                select s).FirstOrDefault();
+
+                if (toDelete != null)
+                {
+                    db.SSPStaffs.DeleteOnSubmit(toDelete);
+                    db.SubmitChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
+        }
+
+
+       public bool DeleteSSPStaffFromProject(int SSPStaffID, int id)
+       {
+           BOTADataContext db = new BOTADataContext(connectString);
+
+           bool result = true;
+
+           try
+           {
+               var toDelete = (from s in db.SSPStaffProjects
+                     where s.ProjectID == id && s.SSPStaffID == SSPStaffID
+                     select s).FirstOrDefault();
+
+               if (toDelete != null)
+               {
+                   db.SSPStaffProjects.DeleteOnSubmit(toDelete);
+                   db.SubmitChanges();
+               }
+           }
+           catch (Exception ex)
+           {
+               result = false;
+           }
+
+           return result;
+       }
+
+      /// <summary>
+      /// Inserts staff into project.
+      /// </summary>
+      /// <param name="SSPStaffID"></param>
+      /// <param name="id"></param>
+      /// <returns></returns>
+       public bool InsertSSPStaffIntoProject(int SSPStaffID, int id)
+       {
+           bool result = true;
+           BOTADataContext db = new BOTADataContext(connectString);
+
+           try
+           {  
+               //TODO: I should also check if such project and user exists.
+
+               if (!db.SSPStaffProjects.Any(l => l.SSPStaffID == SSPStaffID && l.ProjectID == id))  // !if exists. 
+               {
+                   SSPStaffProject sspproject = new SSPStaffProject();
+                   sspproject.ProjectID = id;
+                   sspproject.SSPStaffID = SSPStaffID; 
+                  
+                   db.SSPStaffProjects.InsertOnSubmit(sspproject);
+
+               }
+               else
+               {
+                   return false; 
+               }
+
+               db.SubmitChanges();
+
+
+           }
+           catch (Exception ex)
+           {
+               result = false;
+           }
+
+           return result;
+       }
+
+    
+       /// <summary>
+       /// Get the Role Name for given RoleID.
+       /// </summary>
+       /// <param name="RoleID"></param>
+       /// <returns></returns>
+       public RolesSSPStaff  GetSSPRoleByID(int RoleID)
+       {
+           BOTADataContext db = new BOTADataContext(connectString);
+           RolesSSPStaff result = (from r in db.RolesSSPStaffs
+                             where r.RoleID == RoleID
+                             select r).FirstOrDefault(); 
+           return result;    
+       }
+
+        /// <summary>
+        ///For Drop Down.
+        /// </summary>
+        /// <returns></returns>
+       public IEnumerable<RolesSSPStaff> GetALLSSPRoles()
+       {
+           BOTADataContext db = new BOTADataContext(connectString);
+           var result = from ls in db.RolesSSPStaffs
+                        select ls;
+           return result;
+       
+       }
+
+       public SSPStaff GetSSPStaffByName(string UserName)
+       {
+           SSPStaff account = null;
+
+           BOTADataContext db = new BOTADataContext(connectString);
+           {
+               try
+               {
+                   account = (from a in db.SSPStaffs
+                              where a.username == UserName
+                              select a).FirstOrDefault();
+               }
+               catch
+               {
+                   //oops
+               }
+           }
+
+           return account;
+       }
+
+
+        /// <summary>
+        /// It either updates existing account or
+        /// if such account does not exist then inserts.
+        /// </summary>
+        /// <param name="account"></param>
+       public bool SaveAccount(SSPStaff account)
+       {
+
+           BOTADataContext db = new BOTADataContext(connectString);
+           {
+               try
+               {
+
+                   if (account.SSPStaffID > 0)
+                   {
+                       db.SSPStaffs.Attach(account);
+                       db.Refresh(RefreshMode.KeepCurrentValues, account);
+
+                   }
+                   else
+                   {
+                       db.SSPStaffs.InsertOnSubmit(account);
+                   }
+                   db.SubmitChanges();
+
+                   return true;
+               }
+               catch
+               {
+                   return false; 
+               }
+           }
+       }
+
+
+       public SSPStaff GetAccountByID(int AccountID)
+       {
+           SSPStaff account = null;
+
+           BOTADataContext db = new BOTADataContext(connectString);
+           {
+                account = (from a in db.SSPStaffs
+                          where a.SSPStaffID == AccountID
+                          select a).FirstOrDefault();
+           }
+
+           return account;
+       }
+
+
+         /// <summary>
+        /// Get SSP Staff List of asked Project.
+        /// </summary>
+        /// <param name="ProjectID"></param>
+        /// <returns></returns>
+       public IEnumerable<SSPStaff> GetSSPStaffListForProject(int ProjectID)
+       {
+           BOTADataContext db = new BOTADataContext(connectString);
+           IEnumerable<SSPStaff> result;
+           result = (from s in db.SSPStaffs
+                    join r in db.RolesSSPStaffs on s.RoleID equals r.RoleID
+                    join p in db.SSPStaffProjects on s.SSPStaffID equals p.SSPStaffID
+                    where p.ProjectID == ProjectID
+                    select s).Distinct(); 
+
+           /* result = (from s in db.SSPStaffProjects
+                     where s.ProjectID == ProjectID
+                     select s.SSPStaff).Distinct();  */
+
+           return result;
+       }
+
+        /// <summary>
+        /// Get All SSP Staff
+        /// </summary>
+        /// <param name="ProjectID"></param>
+        /// <returns></returns>
+       public IEnumerable<SSPStaff> GetSSPStaffList()
+       {
+           BOTADataContext db = new BOTADataContext(connectString);
+           IEnumerable<SSPStaff> result;
+           result = (from s in db.SSPStaffs
+                     join r in db.RolesSSPStaffs on s.RoleID equals r.RoleID
+                     select s).Distinct();
+           return result;
+       }
+
+      
+    }
+}

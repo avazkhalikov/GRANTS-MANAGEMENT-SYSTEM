@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/DBMANAGER/!svn/ver/223/BOTACORE/CORE/CORE/DataAccess/DAL
+END
+SqlHelper.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/DBMANAGER/!svn/ver/116/BOTACORE/CORE/CORE/DataAccess/DAL/SqlHelper.cs
+END
+SqlCommands.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/DBMANAGER/!svn/ver/223/BOTACORE/CORE/CORE/DataAccess/DAL/SqlCommands.cs
+END
+SQL QUERIES.txt
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/DBMANAGER/!svn/ver/27/BOTACORE/CORE/CORE/DataAccess/DAL/SQL%20QUERIES.txt
+END
+ISqlCommands.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/DBMANAGER/!svn/ver/168/BOTACORE/CORE/CORE/DataAccess/DAL/ISqlCommands.cs
+END

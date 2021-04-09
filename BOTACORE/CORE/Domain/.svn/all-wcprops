@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/DBMANAGER/!svn/ver/300/BOTACORE/CORE/CORE/Domain
+END
+Report.cs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Domain/Report.cs
+END
+ProposalInfo.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/DBMANAGER/!svn/ver/32/BOTACORE/CORE/CORE/Domain/ProposalInfo.cs
+END
+FundingSource.cs
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/DBMANAGER/!svn/ver/31/BOTACORE/CORE/CORE/Domain/FundingSource.cs
+END
+AccessLevelEnum.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Domain/AccessLevelEnum.cs
+END
+FinReportFilter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/DBMANAGER/!svn/ver/304/BOTACORE/CORE/CORE/Domain/FinReportFilter.cs
+END
+ProjectInfo.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/DBMANAGER/!svn/ver/27/BOTACORE/CORE/CORE/Domain/ProjectInfo.cs
+END
+BOTA.designer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/DBMANAGER/!svn/ver/300/BOTACORE/CORE/CORE/Domain/BOTA.designer.cs
+END
+Permission.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/DBMANAGER/!svn/ver/27/BOTACORE/CORE/CORE/Domain/Permission.cs
+END
+LegalStatus.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/DBMANAGER/!svn/ver/132/BOTACORE/CORE/CORE/Domain/LegalStatus.cs
+END
+CryptBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/DBMANAGER/!svn/ver/26/BOTACORE/CORE/CORE/Domain/CryptBase.cs
+END
+Account.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Domain/Account.cs
+END
+BOTA.dbml
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/DBMANAGER/!svn/ver/300/BOTACORE/CORE/CORE/Domain/BOTA.dbml
+END
+Proposal.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Domain/Proposal.cs
+END
+ProjectLocation.cs
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/DBMANAGER/!svn/ver/31/BOTACORE/CORE/CORE/Domain/ProjectLocation.cs
+END
+Role.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/DBMANAGER/!svn/ver/27/BOTACORE/CORE/CORE/Domain/Role.cs
+END
+ReportStructs.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/DBMANAGER/!svn/ver/304/BOTACORE/CORE/CORE/Domain/ReportStructs.cs
+END
+Organization.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/DBMANAGER/!svn/ver/27/BOTACORE/CORE/CORE/Domain/Organization.cs
+END
+IOptions.cs
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/DBMANAGER/!svn/ver/252/BOTACORE/CORE/CORE/Domain/IOptions.cs
+END
+BaseEntity.cs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Domain/BaseEntity.cs
+END
+GrantTypeList.cs
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/DBMANAGER/!svn/ver/252/BOTACORE/CORE/CORE/Domain/GrantTypeList.cs
+END
+BOTA.dbml.layout
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/DBMANAGER/!svn/ver/300/BOTACORE/CORE/CORE/Domain/BOTA.dbml.layout
+END

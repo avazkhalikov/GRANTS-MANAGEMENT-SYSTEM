@@ -1,0 +1,242 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using BOTACORE.CORE.Domain;
+using System.Data.Linq;
+using System.Data;
+using StructureMap;
+using BOTACORE.CORE;
+using BOTACORE.CORE.DataAccess.DAL;
+
+namespace BOTACORE.CORE.DataAccess.Impl
+{
+   
+
+   public class LReportsRepository
+    {
+
+       private string connectString;
+  
+       public LReportsRepository()
+       {
+            //string connString = Settings.Default.EntityConnection; 
+          //  Context = new BOTADBEntities1();
+           Connection conn = new Connection();
+           connectString = conn.GetDirectConnString();
+          
+       }
+
+       //Report 1
+       public List<RequestedAndAwardedAmountStruct> RequestedAndAwardedAmountByRegion(IQueryable<Project> result)
+       {          
+
+           //1.Groups By Region,/ Counts how many in each Group./ Sums Amts in each Group.
+           var RegionGroup = result.GroupBy(ra => ra.Organization.Addresses.FirstOrDefault().RegionList.DDNAME)
+                            .Select(reg => new RequestedAndAwardedAmountStruct()
+                            {
+                                Region = reg.Key,
+                                NumberofAllProjects = reg.Count(),
+                                NumberofActiveProjects = reg.Count(p => p.ProposalStatus.ProposalStatusList.ProposalStatusText=="Active"),
+                                NumberofProposals = reg.Count(p => p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Proposal"),
+                                RequestedAmt = reg.Sum(reqamt=>reqamt.ProjectInfo.AmtRequested).Value,
+                                AwarderAmt = reg.Sum(reqamt=>reqamt.ProjectInfo.AwardedAmt).Value
+                            });
+
+           try
+           {
+               var MatchList2 = RegionGroup.ToList();
+               return MatchList2; 
+           }
+           catch
+           {
+               return null; 
+           }
+           
+        
+       }
+
+       //Report 2
+       public List<RequestedAmountByX> RequestedAmountByArea(IQueryable<Project> result)
+       {
+           //1.Groups By Region,/ Counts how many in each Group./ Sums Amts in each Group.
+           //var RegionGroup = result.GroupBy(ra => ra.Organization.Addresses.FirstOrDefault().RegionList.DDNAME)
+           
+           //filter out to only Grants.
+           result = result.Where(p => p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Active" ||
+                                 p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Closed");
+
+           var RegionGroup = result.GroupBy(ra => ra.ProgramArea.ProgramAreaList.ProgramAreaText)
+                            .Select(reg => new RequestedAmountByX()
+                            {
+                                Type = reg.Key,
+                                Amount = reg.Sum(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                Average = (int)reg.Average(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                MinimumAmount = reg.Min(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                MaximumAmount = reg.Max(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                NumberOfGrants = reg.Count()
+                            });
+
+           try
+           {
+               var MatchList2 = RegionGroup.ToList();
+               return MatchList2; 
+           }
+           catch
+           {
+               return null; 
+           }
+
+       }
+
+       //Report 3
+       public List<RequestedAmountByX> RequestedAmountByGrantType(IQueryable<Project> result)
+       {
+           //1.Groups By Region,/ Counts how many in each Group./ Sums Amts in each Group.
+           //var RegionGroup = result.GroupBy(ra => ra.Organization.Addresses.FirstOrDefault().RegionList.DDNAME)
+
+           //filter out to only Grants.
+           result = result.Where(p => p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Active" ||
+                                 p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Closed");
+
+           var RegionGroup = result.GroupBy(ra => ra.GrantType.GrantTypeList.GrantTypeText)
+                            .Select(reg => new RequestedAmountByX()
+                            {
+                                Type = reg.Key,
+                                Amount = reg.Sum(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                Average = (int)reg.Average(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                MinimumAmount = reg.Min(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                MaximumAmount = reg.Max(reqamt => reqamt.ProjectInfo.AmtRequested).Value,
+                                NumberOfGrants = reg.Count()
+                            });
+
+
+           try
+           {
+               var MatchList2 = RegionGroup.ToList();
+               return MatchList2;
+           }
+           catch
+           {
+               return null;
+           }
+
+          
+
+       }
+
+       //Report 4 
+       public List<RequestedAmountByX> AwardedAmountByArea(IQueryable<Project> result)
+       {
+           //1.Groups By Region,/ Counts how many in each Group./ Sums Amts in each Group.
+           //var RegionGroup = result.GroupBy(ra => ra.Organization.Addresses.FirstOrDefault().RegionList.DDNAME)
+
+           //filter out to only Grants.
+           result = result.Where(p => p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Active" ||
+                                 p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Closed");
+
+           var RegionGroup = result.GroupBy(ra => ra.ProgramArea.ProgramAreaList.ProgramAreaText)
+                            .Select(reg => new RequestedAmountByX()
+                            {
+                                Type = reg.Key,
+                                Amount = reg.Sum(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                Average = (int)reg.Average(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                MinimumAmount = reg.Min(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                MaximumAmount = reg.Max(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                NumberOfGrants = reg.Count()
+                            });
+
+
+           try
+           {
+               var MatchList2 = RegionGroup.ToList();
+               return MatchList2;
+           }
+           catch
+           {
+               return null;
+           }
+
+       }
+
+       //Report 5
+       public List<RequestedAmountByX> AwardedAmountByGrantType(IQueryable<Project> result)
+       {
+           //1.Groups By Region,/ Counts how many in each Group./ Sums Amts in each Group.
+           //var RegionGroup = result.GroupBy(ra => ra.Organization.Addresses.FirstOrDefault().RegionList.DDNAME)
+
+           //filter out to only Grants.
+           result = result.Where(p => p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Active" ||
+                                 p.ProposalStatus.ProposalStatusList.ProposalStatusText == "Closed");
+
+           var RegionGroup = result.GroupBy(ra => ra.GrantType.GrantTypeList.GrantTypeText)
+                            .Select(reg => new RequestedAmountByX()
+                            {
+                                Type = reg.Key,
+                                Amount = reg.Sum(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                Average = (int)reg.Average(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                MinimumAmount = reg.Min(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                MaximumAmount = reg.Max(reqamt => reqamt.ProjectInfo.AwardedAmt).Value,
+                                NumberOfGrants = reg.Count()
+                            });
+
+
+           try
+           {
+               var MatchList2 = RegionGroup.ToList();
+               return MatchList2;
+           }
+           catch
+           {
+               return null;
+           }
+
+       }
+
+
+       public IQueryable<Project> GetResults(FinReportFilter frepf)
+       {
+
+           BOTADataContext db = new BOTADataContext(connectString);
+           IQueryable<Project> matches = db.Projects;
+          // IQueryable<FinReportFilter> result = null; 
+
+           if (frepf.isAmountRequested.Value)
+           {
+               if (frepf.RequestedDateStart.HasValue && frepf.RequestedDateEnd.HasValue)
+               {
+                   matches = matches.Where(a => a.ProposalInfo.RequestDate >= frepf.RequestedDateStart 
+                                            && a.ProposalInfo.RequestDate <= frepf.RequestedDateEnd);
+               }             
+
+           }
+
+           var MatchList2 = matches.ToList(); 
+            //people.Join(pets,
+            //    person => person,
+            //    pet => pet.Owner,
+            //    (person, pet) =>
+            //        new { OwnerName = person.Name, Pet = pet.Name }).ToList();
+
+           if (frepf.isOrganizationName.Value)
+           { 
+              //join the project with organization where organization has projectID.
+                matches.Join(matches,
+                            project => project,
+                            organization => organization,
+                            (project, organization) =>
+                             new { ProjectID = project.ProjectID, OrgPrjectID = organization.ProjectID });
+           
+           }
+
+        
+           var MatchList = matches.ToList();
+
+
+           return matches;  
+       }
+
+
+
+    }
+}

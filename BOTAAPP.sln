@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BOTAMVC3", "BOTAAPP\BOTAMVC3.csproj", "{035DC32F-E100-48D7-901A-516633DF17F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BOTACORE", "BOTACORE\BOTACORE.csproj", "{5F3B14AF-B19B-4E32-8CDC-F19447DA751B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructMapCont", "StructMapCont\StructMapCont.csproj", "{D03D1FAC-196F-40B8-A7C0-899139A77E99}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{035DC32F-E100-48D7-901A-516633DF17F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035DC32F-E100-48D7-901A-516633DF17F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035DC32F-E100-48D7-901A-516633DF17F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035DC32F-E100-48D7-901A-516633DF17F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3B14AF-B19B-4E32-8CDC-F19447DA751B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3B14AF-B19B-4E32-8CDC-F19447DA751B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3B14AF-B19B-4E32-8CDC-F19447DA751B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3B14AF-B19B-4E32-8CDC-F19447DA751B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03D1FAC-196F-40B8-A7C0-899139A77E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03D1FAC-196F-40B8-A7C0-899139A77E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03D1FAC-196F-40B8-A7C0-899139A77E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03D1FAC-196F-40B8-A7C0-899139A77E99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD2CF14A-7FEB-48E3-9C82-3FFBE58F20B3}
+	EndGlobalSection
+EndGlobal

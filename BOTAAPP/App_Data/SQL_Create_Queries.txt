@@ -1,0 +1,1559 @@
+﻿USE [GMSKZ]
+GO
+/****** Object:  User [akhalikov]    Script Date: 4/9/2021 5:08:58 PM ******/
+CREATE USER [akhalikov] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[akhalikov]
+GO
+/****** Object:  User [botauser]    Script Date: 4/9/2021 5:08:58 PM ******/
+CREATE USER [botauser] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[botauser]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [botauser]
+GO
+ALTER ROLE [db_accessadmin] ADD MEMBER [botauser]
+GO
+ALTER ROLE [db_securityadmin] ADD MEMBER [botauser]
+GO
+ALTER ROLE [db_ddladmin] ADD MEMBER [botauser]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [botauser]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [botauser]
+GO
+/****** Object:  Schema [akhalikov]    Script Date: 4/9/2021 5:08:58 PM ******/
+CREATE SCHEMA [akhalikov]
+GO
+/****** Object:  Schema [botauser]    Script Date: 4/9/2021 5:08:58 PM ******/
+CREATE SCHEMA [botauser]
+GO
+/****** Object:  Table [dbo].[ProposalInfo]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProposalInfo](
+	[ProjectID] [int] NOT NULL,
+	[RequestDate] [datetime] NOT NULL,
+	[TitleR] [nvarchar](400) NULL,
+	[TitleE] [nvarchar](400) NULL,
+	[PubStatementR] [nvarchar](2000) NULL,
+	[PubStatementE] [nvarchar](2000) NULL,
+	[PubStatementK] [nvarchar](2000) NULL,
+ CONSTRAINT [PK_ProposalInfo] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[General]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[General](
+	[OrgID] [int] NOT NULL,
+	[FiscalYearEnd] [datetime] NULL,
+	[Name] [nvarchar](400) NULL,
+	[Notes] [nvarchar](300) NULL,
+	[NameRu] [nvarchar](400) NULL,
+ CONSTRAINT [PK_General] PRIMARY KEY CLUSTERED 
+(
+	[OrgID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Projects]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Projects](
+	[ProjectID] [int] IDENTITY(1,1) NOT NULL,
+	[OrgID] [int] NULL,
+	[Label] [nvarchar](100) NULL,
+	[isDeleted] [bit] NULL,
+ CONSTRAINT [PK_Projects] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectInfo]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectInfo](
+	[ProjectInfoID] [int] NOT NULL,
+	[AmtRequested] [decimal](18, 2) NULL,
+	[AwardedAmt] [decimal](18, 2) NULL,
+	[AcceptedDate] [datetime] NULL,
+	[StartDate] [datetime] NULL,
+	[EndDate] [datetime] NULL,
+	[ClosedDate] [datetime] NULL,
+ CONSTRAINT [PK_ProjectInfo] PRIMARY KEY CLUSTERED 
+(
+	[ProjectInfoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProposalStatusList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProposalStatusList](
+	[ProposalStatusID] [int] IDENTITY(0,1) NOT NULL,
+	[ProposalStatusText] [varchar](50) NULL,
+ CONSTRAINT [PK_ProposalStatusList] PRIMARY KEY CLUSTERED 
+(
+	[ProposalStatusID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProposalStatus]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProposalStatus](
+	[PropStatusID] [int] NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[SelectedDate] [datetime] NULL,
+ CONSTRAINT [PK_ProposalStatus] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  View [dbo].[vProjectsN]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[vProjectsN]
+AS
+SELECT     p.ProjectID, pi.TitleE, pi.TitleR, g.Name, g.NameRu, psl.ProposalStatusText, prji.AwardedAmt
+FROM         dbo.Projects p LEFT OUTER JOIN
+                      dbo.ProposalStatus ps ON p.ProjectID = ps.ProjectID INNER JOIN
+                      dbo.ProposalStatusList psl ON psl.ProposalStatusID = ps.PropStatusID LEFT OUTER JOIN
+                      dbo.ProposalInfo pi ON pi.ProjectID = p.ProjectID LEFT OUTER JOIN
+                      dbo.General g ON g.OrgID = p.OrgID LEFT OUTER JOIN
+                      dbo.ProjectInfo prji ON prji.ProjectInfoID = p.ProjectID
+GO
+/****** Object:  View [dbo].[vProjects]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE VIEW [dbo].[vProjects]
+AS
+SELECT     p.ProjectID, g.Name, g.OrgID, p.Label, g.NameRu
+FROM         dbo.Projects AS p INNER JOIN
+                      dbo.General AS g ON g.OrgID = p.OrgID
+WHERE     (p.isDeleted = 'False') OR
+                      (p.isDeleted IS NULL)
+GO
+/****** Object:  Table [dbo].[Address]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Address](
+	[AddessID] [int] IDENTITY(1,1) NOT NULL,
+	[OrgID] [int] NULL,
+	[DDIDRegion] [int] NULL,
+	[LegalAddress] [nvarchar](100) NULL,
+	[LocationHint] [nvarchar](100) NULL,
+	[Country] [nvarchar](50) NULL,
+	[Area] [nvarchar](50) NULL,
+	[City] [nvarchar](50) NULL,
+	[Region] [nvarchar](50) NULL,
+	[Village] [nvarchar](50) NULL,
+	[Phone] [varchar](50) NULL,
+	[Fax] [varchar](50) NULL,
+	[email] [varchar](50) NULL,
+	[website] [varchar](50) NULL,
+	[isLegalAddress] [bit] NULL,
+ CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED 
+(
+	[AddessID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BankInfo]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BankInfo](
+	[BankInfoID] [int] NOT NULL,
+	[BankType] [int] NULL,
+	[Address1] [text] NULL,
+	[Address2] [text] NULL,
+	[City] [varchar](50) NULL,
+	[State] [varchar](50) NULL,
+	[Zip] [varchar](50) NULL,
+	[Country] [varchar](50) NULL,
+	[BankName] [varchar](50) NULL,
+	[AccountNumber] [varchar](50) NULL,
+	[SortCode] [varchar](50) NULL,
+	[Correspond] [varchar](50) NULL,
+	[ABASwift] [varchar](50) NULL,
+	[bank] [varchar](50) NULL,
+	[swift] [varchar](50) NULL,
+	[TIN] [varchar](50) NULL,
+	[Lang] [int] NULL,
+ CONSTRAINT [PK_BankInfo] PRIMARY KEY CLUSTERED 
+(
+	[BankInfoID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[BeingEditedByUser]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[BeingEditedByUser](
+	[TableName] [varchar](50) NULL,
+	[UserID] [int] NULL,
+	[PrimaryKeyFieldName] [varchar](50) NULL,
+	[PrimaryKey] [int] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Budget]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Budget](
+	[BudgetID] [int] NOT NULL,
+	[ContractInitialAmt] [int] NULL,
+	[InfoBox] [nvarchar](500) NULL,
+	[Returned] [decimal](18, 2) NULL,
+	[Cancellation] [decimal](18, 2) NULL,
+ CONSTRAINT [PK_Budget] PRIMARY KEY CLUSTERED 
+(
+	[BudgetID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CompetitionCode]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CompetitionCode](
+	[CompetCodeID] [int] NULL,
+	[ProjectID] [int] NOT NULL,
+	[SelectedDate] [datetime] NULL,
+ CONSTRAINT [PK_CompetitionCode] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CompetitionCodeList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CompetitionCodeList](
+	[CompetitionCodeID] [int] IDENTITY(0,1) NOT NULL,
+	[CodeText] [varchar](50) NULL,
+ CONSTRAINT [PK_CompetitionCodeList] PRIMARY KEY CLUSTERED 
+(
+	[CompetitionCodeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Contact]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Contact](
+	[ContactID] [int] IDENTITY(1,1) NOT NULL,
+	[OrgID] [int] NULL,
+	[Prefix] [nvarchar](100) NULL,
+	[FirstName] [nvarchar](100) NULL,
+	[MiddleName] [nvarchar](100) NULL,
+	[LastName] [nvarchar](100) NULL,
+	[Title] [nvarchar](100) NULL,
+	[EmailAddress] [varchar](50) NULL,
+	[OfficePhone] [varchar](50) NULL,
+	[HomePhone] [varchar](50) NULL,
+	[CellPhone] [varchar](50) NULL,
+	[FaxNumber] [varchar](50) NULL,
+	[City] [nvarchar](100) NULL,
+	[County] [nvarchar](100) NULL,
+	[Address] [nvarchar](100) NULL,
+ CONSTRAINT [PK_Contact] PRIMARY KEY CLUSTERED 
+(
+	[ContactID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EventFieldMapper]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EventFieldMapper](
+	[MapperID] [int] IDENTITY(1,1) NOT NULL,
+	[DBFIELD] [varchar](50) NULL,
+	[DOCFIELD] [varchar](50) NULL,
+	[TABLENAME] [varchar](50) NULL,
+	[Description] [varchar](200) NULL,
+ CONSTRAINT [PK_EventFieldMapper] PRIMARY KEY CLUSTERED 
+(
+	[MapperID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [UQ_EventFieldMapper_DBFIELD] UNIQUE NONCLUSTERED 
+(
+	[DBFIELD] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[EventType]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[EventType](
+	[EventTypeID] [int] IDENTITY(1,1) NOT NULL,
+	[EventTypeName] [nvarchar](100) NULL,
+ CONSTRAINT [PK_EventType] PRIMARY KEY CLUSTERED 
+(
+	[EventTypeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FinancialArticle]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FinancialArticle](
+	[FinArticleID] [int] IDENTITY(1,1) NOT NULL,
+	[BudgetID] [int] NOT NULL,
+	[FinArticleCatID] [int] NOT NULL,
+	[ArticleName] [nvarchar](100) NULL,
+	[Price] [int] NULL,
+	[Amt] [int] NULL,
+	[Times] [int] NULL,
+	[TimePeriod] [int] NULL,
+	[GranteeInput] [int] NULL,
+	[DonorInput] [int] NULL,
+	[Info] [nvarchar](100) NULL,
+	[TransferAmt] [int] NULL,
+ CONSTRAINT [PK_FinancialArticle] PRIMARY KEY CLUSTERED 
+(
+	[FinArticleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FinArtCatList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FinArtCatList](
+	[FinArticleCatID] [int] IDENTITY(1,1) NOT NULL,
+	[FinArticleCatName] [nvarchar](200) NULL,
+ CONSTRAINT [PK_FinArtCatList] PRIMARY KEY CLUSTERED 
+(
+	[FinArticleCatID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FinArtCatListR]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FinArtCatListR](
+	[FinArticleCatListID] [int] IDENTITY(1,1) NOT NULL,
+	[FinArticleCatName] [nvarchar](100) NULL,
+ CONSTRAINT [PK_FinArtCatListR] PRIMARY KEY CLUSTERED 
+(
+	[FinArticleCatListID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FinArticleCategory]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FinArticleCategory](
+	[BudgetID] [int] NOT NULL,
+	[FinArticleCatID] [int] NOT NULL,
+ CONSTRAINT [PK_FinArticleCategory] PRIMARY KEY CLUSTERED 
+(
+	[BudgetID] ASC,
+	[FinArticleCatID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FinArticleCategoryR]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FinArticleCategoryR](
+	[FinArticleCatID] [int] IDENTITY(1,1) NOT NULL,
+	[BudgetID] [int] NOT NULL,
+	[FinArticleCatText] [nvarchar](300) NULL,
+	[Price] [decimal](18, 2) NULL,
+	[TransferAmt] [decimal](18, 2) NULL,
+	[FinCatID] [int] NULL,
+ CONSTRAINT [PK_FinArticleCategoryR] PRIMARY KEY CLUSTERED 
+(
+	[FinArticleCatID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FundingOrganization]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FundingOrganization](
+	[FundingSourceOrgID] [int] IDENTITY(1,1) NOT NULL,
+	[FundingOrgName] [nvarchar](200) NULL,
+	[FundingOrgDescription] [nvarchar](500) NULL,
+ CONSTRAINT [PK_FundingOrganization] PRIMARY KEY CLUSTERED 
+(
+	[FundingSourceOrgID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[FundingSource]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[FundingSource](
+	[FundingSourceID] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[FundingSourceOrgID] [int] NOT NULL,
+	[Date] [datetime] NULL,
+	[CashAmount] [int] NULL,
+	[InKindAmount] [int] NULL,
+	[InKindAmountInfo] [varchar](50) NULL,
+ CONSTRAINT [PK_FundingSource] PRIMARY KEY CLUSTERED 
+(
+	[FundingSourceID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[GrantType]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GrantType](
+	[GrantTypeCodeID] [int] NULL,
+	[ProjectID] [int] NOT NULL,
+	[SelectedDate] [datetime] NULL,
+ CONSTRAINT [PK_GrantType] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[GrantTypeList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GrantTypeList](
+	[GrantTypeCodeID] [int] IDENTITY(1,1) NOT NULL,
+	[GrantTypeText] [varchar](50) NULL,
+ CONSTRAINT [PK_GrantTypeList] PRIMARY KEY CLUSTERED 
+(
+	[GrantTypeCodeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Indicator]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Indicator](
+	[IndicatorID] [int] NOT NULL,
+	[IndicatorName] [nvarchar](100) NULL,
+ CONSTRAINT [PK_Indicator] PRIMARY KEY CLUSTERED 
+(
+	[IndicatorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IndicatorCategoryLabel]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[IndicatorCategoryLabel](
+	[IndicatorCategoryLabelID] [int] IDENTITY(1,1) NOT NULL,
+	[GrantTypeCodeID] [int] NOT NULL,
+	[CountTotal] [bit] NOT NULL,
+	[Text] [nvarchar](100) NULL,
+ CONSTRAINT [PK_IndicatorCategoryLabel] PRIMARY KEY CLUSTERED 
+(
+	[IndicatorCategoryLabelID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IndicatorItem]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[IndicatorItem](
+	[IndicatorItemID] [int] IDENTITY(1,1) NOT NULL,
+	[IndicatorCategoryLabelID] [int] NOT NULL,
+	[IndicatorLabelID] [int] NOT NULL,
+	[IndicatorID] [int] NOT NULL,
+	[Baseline] [int] NULL,
+	[Benchmark] [int] NULL,
+	[Final] [int] NULL,
+ CONSTRAINT [PK_IndicatorItem] PRIMARY KEY CLUSTERED 
+(
+	[IndicatorItemID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IndicatorLabel]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[IndicatorLabel](
+	[IndicatorLabelID] [int] IDENTITY(1,1) NOT NULL,
+	[GrantTypeCodeID] [int] NOT NULL,
+	[Text] [nvarchar](200) NULL,
+	[LabelContentCategory] [int] NULL,
+	[LabelOrder] [int] NULL,
+ CONSTRAINT [PK_IndicatorLabel] PRIMARY KEY CLUSTERED 
+(
+	[IndicatorLabelID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IndicatorLabelContentCategory]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[IndicatorLabelContentCategory](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Text] [nvarchar](50) NULL,
+ CONSTRAINT [PK_IndicatorLabelContentCategory] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[IndicatorTemplateItem]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[IndicatorTemplateItem](
+	[IndicatorTemplateItemID] [int] IDENTITY(1,1) NOT NULL,
+	[IndicatorCategoryLabelID] [int] NOT NULL,
+	[IndicatorLabelID] [int] NOT NULL,
+	[Baseline] [int] NULL,
+	[Benchmark] [int] NULL,
+	[Final] [int] NULL,
+ CONSTRAINT [PK_IndicatorTemplateItem] PRIMARY KEY CLUSTERED 
+(
+	[IndicatorTemplateItemID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[LegalStatus]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LegalStatus](
+	[OrgID] [int] NOT NULL,
+	[LegSListID] [int] NOT NULL,
+	[SelectedDate] [datetime] NULL,
+ CONSTRAINT [PK_LegalStatus] PRIMARY KEY CLUSTERED 
+(
+	[OrgID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[LegalStatusList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[LegalStatusList](
+	[LegStatListID] [int] IDENTITY(1,1) NOT NULL,
+	[LegName] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_LegalStatusList] PRIMARY KEY CLUSTERED 
+(
+	[LegStatListID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Organization]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Organization](
+	[OrgID] [int] IDENTITY(1,1) NOT NULL,
+ CONSTRAINT [PK_Organization] PRIMARY KEY CLUSTERED 
+(
+	[OrgID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[OrganizationStaff]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[OrganizationStaff](
+	[StaffID] [int] IDENTITY(1,1) NOT NULL,
+	[OrgID] [int] NULL,
+	[RoleID] [int] NULL,
+	[FirstName] [varchar](50) NULL,
+	[LastName] [varchar](50) NULL,
+	[MiddleName] [varchar](50) NULL,
+ CONSTRAINT [PK_ProjectStaff] PRIMARY KEY CLUSTERED 
+(
+	[StaffID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[OtherFunders]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[OtherFunders](
+	[OtherFundID] [int] IDENTITY(1,1) NOT NULL,
+	[OrgID] [int] NULL,
+	[DonorName] [nvarchar](500) NULL,
+	[ProjectName] [nvarchar](500) NULL,
+	[Amount] [int] NULL,
+	[FundedYear] [int] NULL,
+	[ContactPerson] [nvarchar](500) NULL,
+ CONSTRAINT [PK_OtherFunders] PRIMARY KEY CLUSTERED 
+(
+	[OtherFundID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[OutComeStatements]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[OutComeStatements](
+	[ProjectID] [int] NOT NULL,
+	[OutcomeR] [nvarchar](4000) NULL,
+	[OutcomeE] [nvarchar](4000) NULL,
+	[OutcomeK] [nvarchar](4000) NULL,
+ CONSTRAINT [PK_OutComeStatements] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Permission]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Permission](
+	[PermissionID] [int] NOT NULL,
+	[PermissionName] [varchar](50) NULL,
+	[PermissionType] [int] NULL,
+ CONSTRAINT [PK_Permission] PRIMARY KEY CLUSTERED 
+(
+	[PermissionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Permissions]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Permissions](
+	[RoleID] [int] NOT NULL,
+	[PermissionID] [int] NOT NULL,
+ CONSTRAINT [PK_Permissions] PRIMARY KEY CLUSTERED 
+(
+	[RoleID] ASC,
+	[PermissionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProgramArea]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProgramArea](
+	[ProgramAreaCodeID] [int] NULL,
+	[ProjectID] [int] NOT NULL,
+	[SelectedDate] [datetime] NULL,
+ CONSTRAINT [PK_ProgramArea] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProgramAreaList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProgramAreaList](
+	[ProgramAreaCodeID] [int] IDENTITY(1,1) NOT NULL,
+	[ProgramAreaText] [varchar](50) NULL,
+ CONSTRAINT [PK_ProgramAreaList] PRIMARY KEY CLUSTERED 
+(
+	[ProgramAreaCodeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectEvent]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectEvent](
+	[EventID] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[EventTypeID] [int] NULL,
+	[EventStatus] [int] NULL,
+	[EventDescription] [nvarchar](3000) NULL,
+	[SSPOrGrantee] [bit] NULL,
+	[EventHolderID] [int] NULL,
+	[ScheduledDate] [datetime] NULL,
+	[CompletedDate] [datetime] NULL,
+	[ReportPeriodID] [int] NULL,
+	[ReportStatus] [int] NULL,
+ CONSTRAINT [PK_ProjectEvent] PRIMARY KEY CLUSTERED 
+(
+	[EventID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectEventDocs]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectEventDocs](
+	[EventID] [int] NOT NULL,
+	[ProjectEventDocumentID] [int] NOT NULL,
+ CONSTRAINT [PK_ProjectEventDocs] PRIMARY KEY CLUSTERED 
+(
+	[EventID] ASC,
+	[ProjectEventDocumentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectEventDocument]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectEventDocument](
+	[ProjectEventDocumentID] [int] IDENTITY(1,1) NOT NULL,
+	[FileName] [nvarchar](200) NULL,
+	[PhysicalVirtualPath] [nvarchar](400) NULL,
+	[PhysicalAbsolutePath] [nvarchar](500) NULL,
+	[WebVirtualPath] [nvarchar](400) NULL,
+	[WebAbsolutePath] [nvarchar](500) NULL,
+	[fileextension] [varchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[UpdatedDate] [datetime] NULL,
+	[Author] [nvarchar](100) NULL,
+	[TemplateName] [nvarchar](200) NULL,
+ CONSTRAINT [PK_ProjectEventDocument] PRIMARY KEY CLUSTERED 
+(
+	[ProjectEventDocumentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjectLocation]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjectLocation](
+	[ProjectLocationID] [int] NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[Country] [varchar](50) NULL,
+	[Area] [varchar](50) NULL,
+	[City] [varchar](50) NULL,
+	[Region] [varchar](50) NULL,
+	[Village] [varchar](50) NULL,
+ CONSTRAINT [PK_ProjectLocation] PRIMARY KEY CLUSTERED 
+(
+	[ProjectLocationID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjLocation]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjLocation](
+	[ID] [int] NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[SelectedDate] [datetime] NULL,
+ CONSTRAINT [PK_ProjLocation] PRIMARY KEY CLUSTERED 
+(
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProjLocationList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProjLocationList](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](150) NULL,
+ CONSTRAINT [PK_ProjLocationList] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Query]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Query](
+	[ProjectID] [int] NOT NULL,
+	[OrgID] [int] NULL,
+	[Label] [nvarchar](100) NULL,
+	[isDeleted] [bit] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RegionList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RegionList](
+	[DDID] [int] IDENTITY(1,1) NOT NULL,
+	[DDNAME] [nvarchar](300) NULL,
+ CONSTRAINT [PK_Region] PRIMARY KEY CLUSTERED 
+(
+	[DDID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ReportPeriod]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ReportPeriod](
+	[ReportPeriodID] [int] NOT NULL,
+	[FinArticleID] [int] NOT NULL,
+	[Amount] [int] NULL,
+ CONSTRAINT [PK_ReportPeriod] PRIMARY KEY CLUSTERED 
+(
+	[ReportPeriodID] ASC,
+	[FinArticleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ReportPeriodList]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ReportPeriodList](
+	[ReportPeriodID] [int] IDENTITY(1,1) NOT NULL,
+	[BudgetID] [int] NOT NULL,
+	[PeriodStart] [datetime] NULL,
+	[PeriodEnd] [datetime] NULL,
+	[PaymentStatus] [int] NULL,
+	[PaymentAmount] [int] NULL,
+	[PaymentDate] [datetime] NULL,
+	[PeriodTitle] [varchar](200) NULL,
+ CONSTRAINT [PK_ReportPeriodList] PRIMARY KEY CLUSTERED 
+(
+	[ReportPeriodID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ReportPeriodListR]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ReportPeriodListR](
+	[ReportPeriodID] [int] IDENTITY(1,1) NOT NULL,
+	[BudgetID] [int] NOT NULL,
+	[PeriodStart] [datetime] NULL,
+	[PeriodEnd] [datetime] NULL,
+	[PaymentStatus] [int] NULL,
+	[PaymentAmount] [decimal](18, 2) NULL,
+	[PaymentDate] [datetime] NULL,
+	[PeriodTitle] [varchar](200) NULL,
+ CONSTRAINT [PK_ReportPeriodListR] PRIMARY KEY CLUSTERED 
+(
+	[ReportPeriodID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ReportPeriodR]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ReportPeriodR](
+	[ReportPeriodID] [int] NOT NULL,
+	[FinArticleCatID] [int] NOT NULL,
+	[Amount] [decimal](18, 2) NULL,
+ CONSTRAINT [PK_ReportPeriodR] PRIMARY KEY CLUSTERED 
+(
+	[ReportPeriodID] ASC,
+	[FinArticleCatID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Roles]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Roles](
+	[RoleID] [int] IDENTITY(1,1) NOT NULL,
+	[RoleTitle] [varchar](50) NULL,
+ CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
+(
+	[RoleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RolesSSPStaff]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RolesSSPStaff](
+	[RoleID] [int] IDENTITY(1,1) NOT NULL,
+	[RoleName] [varchar](50) NOT NULL,
+	[RoleNumeric] [int] NULL,
+ CONSTRAINT [PK_RolesSSPStaff] PRIMARY KEY CLUSTERED 
+(
+	[RoleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SSPStaff]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SSPStaff](
+	[SSPStaffID] [int] IDENTITY(1,1) NOT NULL,
+	[RoleID] [int] NOT NULL,
+	[LastName] [nvarchar](50) NULL,
+	[FirstName] [nvarchar](50) NULL,
+	[MiddleName] [nvarchar](50) NULL,
+	[username] [varchar](100) NULL,
+	[Password] [varchar](100) NULL,
+	[Email] [varchar](100) NULL,
+ CONSTRAINT [PK_SSPStaff] PRIMARY KEY CLUSTERED 
+(
+	[SSPStaffID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SSPStaffProjects]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SSPStaffProjects](
+	[SSPStaffID] [int] NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[Active] [bit] NULL,
+ CONSTRAINT [PK_SSPStaffProjects] PRIMARY KEY CLUSTERED 
+(
+	[SSPStaffID] ASC,
+	[ProjectID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TemplateDocument]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TemplateDocument](
+	[TemplateDocsID] [int] IDENTITY(1,1) NOT NULL,
+	[TemplateDocName] [nvarchar](200) NOT NULL,
+	[EventTypeID] [int] NOT NULL,
+ CONSTRAINT [PK_TemplateDocument] PRIMARY KEY CLUSTERED 
+(
+	[TemplateDocsID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TemplateFile]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TemplateFile](
+	[TemplateFileID] [int] NOT NULL,
+	[FileName] [nvarchar](200) NULL,
+	[PhysicalVirtualPath] [nvarchar](400) NULL,
+	[PhysicalAbsolutePath] [nvarchar](500) NULL,
+	[WebVirtualPath] [nvarchar](400) NULL,
+	[WebAbsolutePath] [nvarchar](500) NULL,
+	[fileextension] [varchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[UpdatedDate] [datetime] NULL,
+	[Author] [nvarchar](100) NULL,
+ CONSTRAINT [PK_TemplateFile] PRIMARY KEY CLUSTERED 
+(
+	[TemplateFileID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TheKey]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TheKey](
+	[KeyID] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectID] [int] NULL,
+	[KeyName] [nvarchar](100) NULL,
+ CONSTRAINT [PK_Key] PRIMARY KEY CLUSTERED 
+(
+	[KeyID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserActionLog]    Script Date: 4/9/2021 5:08:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserActionLog](
+	[LogID] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectID] [int] NOT NULL,
+	[Section] [nvarchar](50) NOT NULL,
+	[UserName] [nvarchar](50) NOT NULL,
+	[Action] [nvarchar](50) NOT NULL,
+	[Data] [nvarchar](3850) NULL,
+	[Date] [datetime] NULL,
+	[ProjectLabel] [nvarchar](50) NULL,
+ CONSTRAINT [PK_UserActionLog] PRIMARY KEY CLUSTERED 
+(
+	[LogID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[FinancialArticle] ADD  CONSTRAINT [DF__Financial__Price__5AA469F6]  DEFAULT (0) FOR [Price]
+GO
+ALTER TABLE [dbo].[FinancialArticle] ADD  CONSTRAINT [DF__FinancialAr__Amt__5B988E2F]  DEFAULT (1) FOR [Amt]
+GO
+ALTER TABLE [dbo].[FinancialArticle] ADD  CONSTRAINT [DF__Financial__Times__5C8CB268]  DEFAULT (1) FOR [Times]
+GO
+ALTER TABLE [dbo].[FinancialArticle] ADD  CONSTRAINT [DF__Financial__TimeP__5D80D6A1]  DEFAULT (1) FOR [TimePeriod]
+GO
+ALTER TABLE [dbo].[FinancialArticle] ADD  CONSTRAINT [DF__Financial__Trans__5E74FADA]  DEFAULT (0) FOR [TransferAmt]
+GO
+ALTER TABLE [dbo].[FinArticleCategoryR] ADD  CONSTRAINT [DF_FinArticleCategoryR_FinCatID]  DEFAULT ((0)) FOR [FinCatID]
+GO
+ALTER TABLE [dbo].[ReportPeriod] ADD  DEFAULT (0) FOR [Amount]
+GO
+ALTER TABLE [dbo].[SSPStaffProjects] ADD  CONSTRAINT [DF_SSPStaffProjects_Active]  DEFAULT ((0)) FOR [Active]
+GO
+ALTER TABLE [dbo].[Address]  WITH CHECK ADD  CONSTRAINT [FK_Address_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Address] CHECK CONSTRAINT [FK_Address_Organization]
+GO
+ALTER TABLE [dbo].[Address]  WITH CHECK ADD  CONSTRAINT [FK_Address_RegionList] FOREIGN KEY([DDIDRegion])
+REFERENCES [dbo].[RegionList] ([DDID])
+GO
+ALTER TABLE [dbo].[Address] CHECK CONSTRAINT [FK_Address_RegionList]
+GO
+ALTER TABLE [dbo].[BankInfo]  WITH NOCHECK ADD  CONSTRAINT [FK_BankInfo_Projects] FOREIGN KEY([BankInfoID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[BankInfo] CHECK CONSTRAINT [FK_BankInfo_Projects]
+GO
+ALTER TABLE [dbo].[Budget]  WITH CHECK ADD  CONSTRAINT [FK_Budget_Projects] FOREIGN KEY([BudgetID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Budget] CHECK CONSTRAINT [FK_Budget_Projects]
+GO
+ALTER TABLE [dbo].[CompetitionCode]  WITH CHECK ADD  CONSTRAINT [FK_CompetitionCode_CompetitionCodeList] FOREIGN KEY([CompetCodeID])
+REFERENCES [dbo].[CompetitionCodeList] ([CompetitionCodeID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CompetitionCode] CHECK CONSTRAINT [FK_CompetitionCode_CompetitionCodeList]
+GO
+ALTER TABLE [dbo].[CompetitionCode]  WITH CHECK ADD  CONSTRAINT [FK_CompetitionCode_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[CompetitionCode] CHECK CONSTRAINT [FK_CompetitionCode_Projects]
+GO
+ALTER TABLE [dbo].[Contact]  WITH CHECK ADD  CONSTRAINT [FK_Contact_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Contact] CHECK CONSTRAINT [FK_Contact_Organization]
+GO
+ALTER TABLE [dbo].[FinancialArticle]  WITH NOCHECK ADD  CONSTRAINT [FK_FinancialArticle_FinArticleCategory] FOREIGN KEY([BudgetID], [FinArticleCatID])
+REFERENCES [dbo].[FinArticleCategory] ([BudgetID], [FinArticleCatID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FinancialArticle] CHECK CONSTRAINT [FK_FinancialArticle_FinArticleCategory]
+GO
+ALTER TABLE [dbo].[FinArticleCategory]  WITH CHECK ADD  CONSTRAINT [FK_FinArticleCategory_Budget] FOREIGN KEY([BudgetID])
+REFERENCES [dbo].[Budget] ([BudgetID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FinArticleCategory] CHECK CONSTRAINT [FK_FinArticleCategory_Budget]
+GO
+ALTER TABLE [dbo].[FinArticleCategory]  WITH NOCHECK ADD  CONSTRAINT [FK_FinArticleCategory_FinArtCatList] FOREIGN KEY([FinArticleCatID])
+REFERENCES [dbo].[FinArtCatList] ([FinArticleCatID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FinArticleCategory] CHECK CONSTRAINT [FK_FinArticleCategory_FinArtCatList]
+GO
+ALTER TABLE [dbo].[FinArticleCategoryR]  WITH NOCHECK ADD  CONSTRAINT [FK_FinArticleCategory_BudgetR] FOREIGN KEY([BudgetID])
+REFERENCES [dbo].[Budget] ([BudgetID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FinArticleCategoryR] CHECK CONSTRAINT [FK_FinArticleCategory_BudgetR]
+GO
+ALTER TABLE [dbo].[FundingSource]  WITH NOCHECK ADD  CONSTRAINT [FK_FundingSource_FundingOrganization] FOREIGN KEY([FundingSourceOrgID])
+REFERENCES [dbo].[FundingOrganization] ([FundingSourceOrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FundingSource] CHECK CONSTRAINT [FK_FundingSource_FundingOrganization]
+GO
+ALTER TABLE [dbo].[FundingSource]  WITH CHECK ADD  CONSTRAINT [FK_FundingSource_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[FundingSource] CHECK CONSTRAINT [FK_FundingSource_Projects]
+GO
+ALTER TABLE [dbo].[General]  WITH NOCHECK ADD  CONSTRAINT [FK_General_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[General] CHECK CONSTRAINT [FK_General_Organization]
+GO
+ALTER TABLE [dbo].[GrantType]  WITH CHECK ADD  CONSTRAINT [FK_GrantType_GrantTypeList] FOREIGN KEY([GrantTypeCodeID])
+REFERENCES [dbo].[GrantTypeList] ([GrantTypeCodeID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[GrantType] CHECK CONSTRAINT [FK_GrantType_GrantTypeList]
+GO
+ALTER TABLE [dbo].[GrantType]  WITH CHECK ADD  CONSTRAINT [FK_GrantType_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[GrantType] CHECK CONSTRAINT [FK_GrantType_Projects]
+GO
+ALTER TABLE [dbo].[Indicator]  WITH CHECK ADD  CONSTRAINT [FK_Indicator_Projects] FOREIGN KEY([IndicatorID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Indicator] CHECK CONSTRAINT [FK_Indicator_Projects]
+GO
+ALTER TABLE [dbo].[IndicatorItem]  WITH CHECK ADD  CONSTRAINT [FK_IndicatorItem_Indicator] FOREIGN KEY([IndicatorID])
+REFERENCES [dbo].[Indicator] ([IndicatorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[IndicatorItem] CHECK CONSTRAINT [FK_IndicatorItem_Indicator]
+GO
+ALTER TABLE [dbo].[IndicatorItem]  WITH NOCHECK ADD  CONSTRAINT [FK_IndicatorItem_IndicatorCategoryLabel] FOREIGN KEY([IndicatorCategoryLabelID])
+REFERENCES [dbo].[IndicatorCategoryLabel] ([IndicatorCategoryLabelID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[IndicatorItem] CHECK CONSTRAINT [FK_IndicatorItem_IndicatorCategoryLabel]
+GO
+ALTER TABLE [dbo].[IndicatorItem]  WITH CHECK ADD  CONSTRAINT [FK_IndicatorItem_IndicatorLabel] FOREIGN KEY([IndicatorLabelID])
+REFERENCES [dbo].[IndicatorLabel] ([IndicatorLabelID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[IndicatorItem] CHECK CONSTRAINT [FK_IndicatorItem_IndicatorLabel]
+GO
+ALTER TABLE [dbo].[IndicatorLabel]  WITH CHECK ADD  CONSTRAINT [FK_IndicatorLabel_GrantTypeList] FOREIGN KEY([GrantTypeCodeID])
+REFERENCES [dbo].[GrantTypeList] ([GrantTypeCodeID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[IndicatorLabel] CHECK CONSTRAINT [FK_IndicatorLabel_GrantTypeList]
+GO
+ALTER TABLE [dbo].[IndicatorLabel]  WITH CHECK ADD  CONSTRAINT [FK_IndicatorLabel_IndicatorLabelContentCategory] FOREIGN KEY([LabelContentCategory])
+REFERENCES [dbo].[IndicatorLabelContentCategory] ([ID])
+GO
+ALTER TABLE [dbo].[IndicatorLabel] CHECK CONSTRAINT [FK_IndicatorLabel_IndicatorLabelContentCategory]
+GO
+ALTER TABLE [dbo].[IndicatorTemplateItem]  WITH NOCHECK ADD  CONSTRAINT [FK_IndicatorTemplateItem_IndicatorCategoryLabel] FOREIGN KEY([IndicatorCategoryLabelID])
+REFERENCES [dbo].[IndicatorCategoryLabel] ([IndicatorCategoryLabelID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[IndicatorTemplateItem] CHECK CONSTRAINT [FK_IndicatorTemplateItem_IndicatorCategoryLabel]
+GO
+ALTER TABLE [dbo].[IndicatorTemplateItem]  WITH CHECK ADD  CONSTRAINT [FK_IndicatorTemplateItem_IndicatorLabel] FOREIGN KEY([IndicatorLabelID])
+REFERENCES [dbo].[IndicatorLabel] ([IndicatorLabelID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[IndicatorTemplateItem] CHECK CONSTRAINT [FK_IndicatorTemplateItem_IndicatorLabel]
+GO
+ALTER TABLE [dbo].[LegalStatus]  WITH NOCHECK ADD  CONSTRAINT [FK_LegalStatus_LegalStatusList] FOREIGN KEY([LegSListID])
+REFERENCES [dbo].[LegalStatusList] ([LegStatListID])
+NOT FOR REPLICATION 
+GO
+ALTER TABLE [dbo].[LegalStatus] NOCHECK CONSTRAINT [FK_LegalStatus_LegalStatusList]
+GO
+ALTER TABLE [dbo].[LegalStatus]  WITH NOCHECK ADD  CONSTRAINT [FK_LegalStatus_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+NOT FOR REPLICATION 
+GO
+ALTER TABLE [dbo].[LegalStatus] NOCHECK CONSTRAINT [FK_LegalStatus_Organization]
+GO
+ALTER TABLE [dbo].[OrganizationStaff]  WITH CHECK ADD  CONSTRAINT [FK_OrganizationStaff_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[OrganizationStaff] CHECK CONSTRAINT [FK_OrganizationStaff_Organization]
+GO
+ALTER TABLE [dbo].[OrganizationStaff]  WITH CHECK ADD  CONSTRAINT [FK_OrganizationStaff_Roles] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[Roles] ([RoleID])
+GO
+ALTER TABLE [dbo].[OrganizationStaff] CHECK CONSTRAINT [FK_OrganizationStaff_Roles]
+GO
+ALTER TABLE [dbo].[OtherFunders]  WITH CHECK ADD  CONSTRAINT [FK_OtherFunders_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[OtherFunders] CHECK CONSTRAINT [FK_OtherFunders_Organization]
+GO
+ALTER TABLE [dbo].[OutComeStatements]  WITH CHECK ADD  CONSTRAINT [FK_OutComeStatements_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[OutComeStatements] CHECK CONSTRAINT [FK_OutComeStatements_Projects]
+GO
+ALTER TABLE [dbo].[Permissions]  WITH NOCHECK ADD  CONSTRAINT [FK_Permissions_Permission] FOREIGN KEY([PermissionID])
+REFERENCES [dbo].[Permission] ([PermissionID])
+NOT FOR REPLICATION 
+GO
+ALTER TABLE [dbo].[Permissions] NOCHECK CONSTRAINT [FK_Permissions_Permission]
+GO
+ALTER TABLE [dbo].[Permissions]  WITH NOCHECK ADD  CONSTRAINT [FK_Permissions_RolesSSPStaff] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[RolesSSPStaff] ([RoleID])
+NOT FOR REPLICATION 
+GO
+ALTER TABLE [dbo].[Permissions] NOCHECK CONSTRAINT [FK_Permissions_RolesSSPStaff]
+GO
+ALTER TABLE [dbo].[ProgramArea]  WITH CHECK ADD  CONSTRAINT [FK_ProgramArea_ProgramAreaList] FOREIGN KEY([ProgramAreaCodeID])
+REFERENCES [dbo].[ProgramAreaList] ([ProgramAreaCodeID])
+GO
+ALTER TABLE [dbo].[ProgramArea] CHECK CONSTRAINT [FK_ProgramArea_ProgramAreaList]
+GO
+ALTER TABLE [dbo].[ProgramArea]  WITH CHECK ADD  CONSTRAINT [FK_ProgramArea_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProgramArea] CHECK CONSTRAINT [FK_ProgramArea_Projects]
+GO
+ALTER TABLE [dbo].[ProjectEvent]  WITH CHECK ADD  CONSTRAINT [FK_ProjectEvent_EventType] FOREIGN KEY([EventTypeID])
+REFERENCES [dbo].[EventType] ([EventTypeID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProjectEvent] CHECK CONSTRAINT [FK_ProjectEvent_EventType]
+GO
+ALTER TABLE [dbo].[ProjectEvent]  WITH CHECK ADD  CONSTRAINT [FK_ProjectEvent_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProjectEvent] CHECK CONSTRAINT [FK_ProjectEvent_Projects]
+GO
+ALTER TABLE [dbo].[ProjectEventDocs]  WITH CHECK ADD  CONSTRAINT [FK_ProjectEventDocs_ProjectEvent] FOREIGN KEY([EventID])
+REFERENCES [dbo].[ProjectEvent] ([EventID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProjectEventDocs] CHECK CONSTRAINT [FK_ProjectEventDocs_ProjectEvent]
+GO
+ALTER TABLE [dbo].[ProjectEventDocs]  WITH CHECK ADD  CONSTRAINT [FK_ProjectEventDocs_ProjectEventDocument] FOREIGN KEY([ProjectEventDocumentID])
+REFERENCES [dbo].[ProjectEventDocument] ([ProjectEventDocumentID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProjectEventDocs] CHECK CONSTRAINT [FK_ProjectEventDocs_ProjectEventDocument]
+GO
+ALTER TABLE [dbo].[ProjectInfo]  WITH CHECK ADD  CONSTRAINT [FK_ProjectInfo_Projects] FOREIGN KEY([ProjectInfoID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProjectInfo] CHECK CONSTRAINT [FK_ProjectInfo_Projects]
+GO
+ALTER TABLE [dbo].[ProjectLocation]  WITH NOCHECK ADD  CONSTRAINT [FK_ProjectLocation_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProjectLocation] CHECK CONSTRAINT [FK_ProjectLocation_Projects]
+GO
+ALTER TABLE [dbo].[Projects]  WITH NOCHECK ADD  CONSTRAINT [FK_Projects_Organization] FOREIGN KEY([OrgID])
+REFERENCES [dbo].[Organization] ([OrgID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Projects] CHECK CONSTRAINT [FK_Projects_Organization]
+GO
+ALTER TABLE [dbo].[ProjLocation]  WITH NOCHECK ADD  CONSTRAINT [FK_ProjLocation_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+GO
+ALTER TABLE [dbo].[ProjLocation] CHECK CONSTRAINT [FK_ProjLocation_Projects]
+GO
+ALTER TABLE [dbo].[ProjLocation]  WITH CHECK ADD  CONSTRAINT [FK_ProjLocation_ProjLocationList] FOREIGN KEY([ID])
+REFERENCES [dbo].[ProjLocationList] ([ID])
+GO
+ALTER TABLE [dbo].[ProjLocation] CHECK CONSTRAINT [FK_ProjLocation_ProjLocationList]
+GO
+ALTER TABLE [dbo].[ProposalInfo]  WITH NOCHECK ADD  CONSTRAINT [FK_ProposalInfo_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProposalInfo] CHECK CONSTRAINT [FK_ProposalInfo_Projects]
+GO
+ALTER TABLE [dbo].[ProposalStatus]  WITH CHECK ADD  CONSTRAINT [FK_ProposalStatus_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ProposalStatus] CHECK CONSTRAINT [FK_ProposalStatus_Projects]
+GO
+ALTER TABLE [dbo].[ProposalStatus]  WITH CHECK ADD  CONSTRAINT [FK_ProposalStatus_ProposalStatusList] FOREIGN KEY([PropStatusID])
+REFERENCES [dbo].[ProposalStatusList] ([ProposalStatusID])
+GO
+ALTER TABLE [dbo].[ProposalStatus] CHECK CONSTRAINT [FK_ProposalStatus_ProposalStatusList]
+GO
+ALTER TABLE [dbo].[ReportPeriod]  WITH NOCHECK ADD  CONSTRAINT [FK_ReportPeriod_FinancialArticle] FOREIGN KEY([FinArticleID])
+REFERENCES [dbo].[FinancialArticle] ([FinArticleID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ReportPeriod] CHECK CONSTRAINT [FK_ReportPeriod_FinancialArticle]
+GO
+ALTER TABLE [dbo].[ReportPeriod]  WITH CHECK ADD  CONSTRAINT [FK_ReportPeriod_ReportPeriodList] FOREIGN KEY([ReportPeriodID])
+REFERENCES [dbo].[ReportPeriodList] ([ReportPeriodID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ReportPeriod] CHECK CONSTRAINT [FK_ReportPeriod_ReportPeriodList]
+GO
+ALTER TABLE [dbo].[ReportPeriodList]  WITH CHECK ADD  CONSTRAINT [FK_ReportPeriodList_Budget] FOREIGN KEY([BudgetID])
+REFERENCES [dbo].[Budget] ([BudgetID])
+GO
+ALTER TABLE [dbo].[ReportPeriodList] CHECK CONSTRAINT [FK_ReportPeriodList_Budget]
+GO
+ALTER TABLE [dbo].[ReportPeriodListR]  WITH NOCHECK ADD  CONSTRAINT [FK_ReportPeriodListR_Budget] FOREIGN KEY([BudgetID])
+REFERENCES [dbo].[Budget] ([BudgetID])
+GO
+ALTER TABLE [dbo].[ReportPeriodListR] CHECK CONSTRAINT [FK_ReportPeriodListR_Budget]
+GO
+ALTER TABLE [dbo].[ReportPeriodR]  WITH NOCHECK ADD  CONSTRAINT [FK_ReportPeriod_FinArticleCategoryR] FOREIGN KEY([FinArticleCatID])
+REFERENCES [dbo].[FinArticleCategoryR] ([FinArticleCatID])
+GO
+ALTER TABLE [dbo].[ReportPeriodR] CHECK CONSTRAINT [FK_ReportPeriod_FinArticleCategoryR]
+GO
+ALTER TABLE [dbo].[ReportPeriodR]  WITH CHECK ADD  CONSTRAINT [FK_ReportPeriod_FinArticleCategoryRD] FOREIGN KEY([FinArticleCatID])
+REFERENCES [dbo].[FinArticleCategoryR] ([FinArticleCatID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ReportPeriodR] CHECK CONSTRAINT [FK_ReportPeriod_FinArticleCategoryRD]
+GO
+ALTER TABLE [dbo].[ReportPeriodR]  WITH CHECK ADD  CONSTRAINT [FK_ReportPeriod_ReportPeriodListR] FOREIGN KEY([ReportPeriodID])
+REFERENCES [dbo].[ReportPeriodListR] ([ReportPeriodID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ReportPeriodR] CHECK CONSTRAINT [FK_ReportPeriod_ReportPeriodListR]
+GO
+ALTER TABLE [dbo].[SSPStaff]  WITH NOCHECK ADD  CONSTRAINT [FK_SSPStaff_RolesSSPStaff] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[RolesSSPStaff] ([RoleID])
+NOT FOR REPLICATION 
+GO
+ALTER TABLE [dbo].[SSPStaff] NOCHECK CONSTRAINT [FK_SSPStaff_RolesSSPStaff]
+GO
+ALTER TABLE [dbo].[SSPStaffProjects]  WITH NOCHECK ADD  CONSTRAINT [FK_SSPStaffProjects_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[SSPStaffProjects] CHECK CONSTRAINT [FK_SSPStaffProjects_Projects]
+GO
+ALTER TABLE [dbo].[SSPStaffProjects]  WITH NOCHECK ADD  CONSTRAINT [FK_SSPStaffProjects_SSPStaff] FOREIGN KEY([SSPStaffID])
+REFERENCES [dbo].[SSPStaff] ([SSPStaffID])
+NOT FOR REPLICATION 
+GO
+ALTER TABLE [dbo].[SSPStaffProjects] NOCHECK CONSTRAINT [FK_SSPStaffProjects_SSPStaff]
+GO
+ALTER TABLE [dbo].[TemplateDocument]  WITH CHECK ADD  CONSTRAINT [FK_TemplateDocument_EventType] FOREIGN KEY([EventTypeID])
+REFERENCES [dbo].[EventType] ([EventTypeID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[TemplateDocument] CHECK CONSTRAINT [FK_TemplateDocument_EventType]
+GO
+ALTER TABLE [dbo].[TemplateFile]  WITH CHECK ADD  CONSTRAINT [FK_TemplateFile_TemplateDocument] FOREIGN KEY([TemplateFileID])
+REFERENCES [dbo].[TemplateDocument] ([TemplateDocsID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[TemplateFile] CHECK CONSTRAINT [FK_TemplateFile_TemplateDocument]
+GO
+ALTER TABLE [dbo].[TheKey]  WITH CHECK ADD  CONSTRAINT [FK_TheKey_Projects] FOREIGN KEY([ProjectID])
+REFERENCES [dbo].[Projects] ([ProjectID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[TheKey] CHECK CONSTRAINT [FK_TheKey_Projects]
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'0-None,1-Read,2-Write' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Permission', @level2type=N'COLUMN',@level2name=N'PermissionType'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPane1', @value=N'[0E232FF0-B466-11cf-A24F-00AA00A3EFFF, 1.00]
+Begin DesignProperties = 
+   Begin PaneConfigurations = 
+      Begin PaneConfiguration = 0
+         NumPanes = 4
+         Configuration = "(H (1[40] 4[20] 2[20] 3) )"
+      End
+      Begin PaneConfiguration = 1
+         NumPanes = 3
+         Configuration = "(H (1 [50] 4 [25] 3))"
+      End
+      Begin PaneConfiguration = 2
+         NumPanes = 3
+         Configuration = "(H (1 [50] 2 [25] 3))"
+      End
+      Begin PaneConfiguration = 3
+         NumPanes = 3
+         Configuration = "(H (4 [30] 2 [40] 3))"
+      End
+      Begin PaneConfiguration = 4
+         NumPanes = 2
+         Configuration = "(H (1 [56] 3))"
+      End
+      Begin PaneConfiguration = 5
+         NumPanes = 2
+         Configuration = "(H (2 [66] 3))"
+      End
+      Begin PaneConfiguration = 6
+         NumPanes = 2
+         Configuration = "(H (4 [50] 3))"
+      End
+      Begin PaneConfiguration = 7
+         NumPanes = 1
+         Configuration = "(V (3))"
+      End
+      Begin PaneConfiguration = 8
+         NumPanes = 3
+         Configuration = "(H (1[56] 4[18] 2) )"
+      End
+      Begin PaneConfiguration = 9
+         NumPanes = 2
+         Configuration = "(H (1 [75] 4))"
+      End
+      Begin PaneConfiguration = 10
+         NumPanes = 2
+         Configuration = "(H (1[66] 2) )"
+      End
+      Begin PaneConfiguration = 11
+         NumPanes = 2
+         Configuration = "(H (4 [60] 2))"
+      End
+      Begin PaneConfiguration = 12
+         NumPanes = 1
+         Configuration = "(H (1) )"
+      End
+      Begin PaneConfiguration = 13
+         NumPanes = 1
+         Configuration = "(V (4))"
+      End
+      Begin PaneConfiguration = 14
+         NumPanes = 1
+         Configuration = "(V (2))"
+      End
+      ActivePaneConfig = 0
+   End
+   Begin DiagramPane = 
+      Begin Origin = 
+         Top = 0
+         Left = 0
+      End
+      Begin Tables = 
+         Begin Table = "p"
+            Begin Extent = 
+               Top = 6
+               Left = 38
+               Bottom = 114
+               Right = 189
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+         Begin Table = "g"
+            Begin Extent = 
+               Top = 6
+               Left = 227
+               Bottom = 114
+               Right = 378
+            End
+            DisplayFlags = 280
+            TopColumn = 0
+         End
+      End
+   End
+   Begin SQLPane = 
+   End
+   Begin DataPane = 
+      Begin ParameterDefaults = ""
+      End
+   End
+   Begin CriteriaPane = 
+      Begin ColumnWidths = 11
+         Column = 1440
+         Alias = 900
+         Table = 1170
+         Output = 720
+         Append = 1400
+         NewValue = 1170
+         SortType = 1350
+         SortOrder = 1410
+         GroupBy = 1350
+         Filter = 1350
+         Or = 1350
+         Or = 1350
+         Or = 1350
+      End
+   End
+End
+' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'vProjects'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_DiagramPaneCount', @value=1 , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'VIEW',@level1name=N'vProjects'
+GO

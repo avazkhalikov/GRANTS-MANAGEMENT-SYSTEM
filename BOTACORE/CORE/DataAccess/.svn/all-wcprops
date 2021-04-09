@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/DBMANAGER/!svn/ver/301/BOTACORE/CORE/CORE/DataAccess
+END
+IEventTypeRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/DBMANAGER/!svn/ver/64/BOTACORE/CORE/CORE/DataAccess/IEventTypeRepository.cs
+END
+IOrganizationRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/DBMANAGER/!svn/ver/254/BOTACORE/CORE/CORE/DataAccess/IOrganizationRepository.cs
+END
+IProjectEventRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/DBMANAGER/!svn/ver/201/BOTACORE/CORE/CORE/DataAccess/IProjectEventRepository.cs
+END
+ISSPStaffRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/DBMANAGER/!svn/ver/190/BOTACORE/CORE/CORE/DataAccess/ISSPStaffRepository.cs
+END
+IGrantTypeListRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/DBMANAGER/!svn/ver/214/BOTACORE/CORE/CORE/DataAccess/IGrantTypeListRepository.cs
+END
+ITemplateRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/DBMANAGER/!svn/ver/273/BOTACORE/CORE/CORE/DataAccess/ITemplateRepository.cs
+END
+IAccountRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/DataAccess/IAccountRepository.cs
+END
+IIndicatorRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/DBMANAGER/!svn/ver/266/BOTACORE/CORE/CORE/DataAccess/IIndicatorRepository.cs
+END
+IReportsRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DBMANAGER/!svn/ver/248/BOTACORE/CORE/CORE/DataAccess/IReportsRepository.cs
+END
+IProposalRepository.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/DataAccess/IProposalRepository.cs
+END

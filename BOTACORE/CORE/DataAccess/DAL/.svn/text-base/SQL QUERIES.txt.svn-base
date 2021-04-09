@@ -1,0 +1,24 @@
+﻿--Get Budget Sample Query
+SELECT FinArticleCategory.*, Budget.* , FinancialArticle.*
+FROM dbo.Projects LEFT JOIN 
+dbo.Budget ON dbo.Projects.ProjectID = dbo.Budget.BudgetID
+LEFT JOIN  FinArticleCategory ON FinArticleCategory.BudgetID = Budget.BudgetID 
+LEFT JOIN  FinancialArticle ON FinArticleCategory.FinArticleCatID = FinancialArticle.FinArticleCatID
+WHERE (dbo.Budget.BudgetID = 6)
+ORDER BY FinArticleCategory.FinArticleCatID
+
+
+--Get Transactions Sample Query
+SELECT FinArticleCategory.FinArticleCatID, FinArticleCategory.FinAritcleName, FinancialArticle.FinArticleID, FinancialArticle.Price, 
+FinancialArticle.Amt AS BudgetAmt, FinancialArticle.Times, FinancialArticle.TimePeriod, FinancialArticle.GranteeInput, FinancialArticle.DonorInput, 
+FinancialArticle.Info, FinTransactions.TransactionID, FinTransactions.ReportPeriodID, FinTransaction.Amount AS AmountSpent, 
+ReportPeriod.PeriodStart, ReportPeriod.PeriodEnd, Budget.BudgetID
+FROM dbo.Projects LEFT JOIN 
+dbo.Budget ON dbo.Projects.ProjectID = dbo.Budget.BudgetID
+LEFT JOIN  FinArticleCategory ON FinArticleCategory.BudgetID = Budget.BudgetID 
+LEFT JOIN  FinancialArticle ON FinArticleCategory.FinArticleCatID = FinancialArticle.FinArticleCatID
+INNER JOIN  FinTransactions ON FinancialArticle.FinArticleID = FinTransactions.FinArticleID 
+INNER JOIN  FinTransaction ON FinTransactions.TransactionID = FinTransaction.TransactionID 
+INNER JOIN  ReportPeriod ON FinTransactions.ReportPeriodID = ReportPeriod.ReportPeriodID 
+WHERE (dbo.Budget.BudgetID = 6)
+ORDER BY FinArticleCategory.FinArticleCatID

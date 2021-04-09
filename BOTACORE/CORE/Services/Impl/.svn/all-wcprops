@@ -1,0 +1,179 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/DBMANAGER/!svn/ver/299/BOTACORE/CORE/CORE/Services/Impl
+END
+AccountService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/DBMANAGER/!svn/ver/132/BOTACORE/CORE/CORE/Services/Impl/AccountService.cs
+END
+AggregateViewHolder.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/DBMANAGER/!svn/ver/239/BOTACORE/CORE/CORE/Services/Impl/AggregateViewHolder.cs
+END
+HelloWorldPrinter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Services/Impl/HelloWorldPrinter.cs
+END
+ProposalService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Services/Impl/ProposalService.cs
+END
+Log.cs
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/DBMANAGER/!svn/ver/283/BOTACORE/CORE/CORE/Services/Impl/Log.cs
+END
+UserSession.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/DBMANAGER/!svn/ver/132/BOTACORE/CORE/CORE/Services/Impl/UserSession.cs
+END
+WebContext.cs
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/DBMANAGER/!svn/ver/299/BOTACORE/CORE/CORE/Services/Impl/WebContext.cs
+END
+CryptService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/DBMANAGER/!svn/ver/26/BOTACORE/CORE/CORE/Services/Impl/CryptService.cs
+END
+BudgetPaymentReportService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/DBMANAGER/!svn/ver/283/BOTACORE/CORE/CORE/Services/Impl/BudgetPaymentReportService.cs
+END
+FinanceResults.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/DBMANAGER/!svn/ver/282/BOTACORE/CORE/CORE/Services/Impl/FinanceResults.cs
+END
+OrganizationService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/DBMANAGER/!svn/ver/254/BOTACORE/CORE/CORE/Services/Impl/OrganizationService.cs
+END
+ProjectService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/DBMANAGER/!svn/ver/305/BOTACORE/CORE/CORE/Services/Impl/ProjectService.cs
+END
+WordTemplateService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/DBMANAGER/!svn/ver/22/BOTACORE/CORE/CORE/Services/Impl/WordTemplateService.cs
+END
+ProjectEventService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/DBMANAGER/!svn/ver/201/BOTACORE/CORE/CORE/Services/Impl/ProjectEventService.cs
+END
+GrantTypeListService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/DBMANAGER/!svn/ver/214/BOTACORE/CORE/CORE/Services/Impl/GrantTypeListService.cs
+END
+PaymentReportService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/DBMANAGER/!svn/ver/150/BOTACORE/CORE/CORE/Services/Impl/PaymentReportService.cs
+END
+FinanceAggregateService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/DBMANAGER/!svn/ver/239/BOTACORE/CORE/CORE/Services/Impl/FinanceAggregateService.cs
+END
+BudgetService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/DBMANAGER/!svn/ver/283/BOTACORE/CORE/CORE/Services/Impl/BudgetService.cs
+END
+TemplateService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DBMANAGER/!svn/ver/273/BOTACORE/CORE/CORE/Services/Impl/TemplateService.cs
+END
+ReportService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/DBMANAGER/!svn/ver/247/BOTACORE/CORE/CORE/Services/Impl/ReportService.cs
+END
+IndicatorService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/DBMANAGER/!svn/ver/266/BOTACORE/CORE/CORE/Services/Impl/IndicatorService.cs
+END
+HelloWorldPrinter2.cs
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Services/Impl/HelloWorldPrinter2.cs
+END
+AppDropDownsService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/DBMANAGER/!svn/ver/254/BOTACORE/CORE/CORE/Services/Impl/AppDropDownsService.cs
+END
+Redirector.cs
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Services/Impl/Redirector.cs
+END
+BudgetAggregateService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/DBMANAGER/!svn/ver/283/BOTACORE/CORE/CORE/Services/Impl/BudgetAggregateService.cs
+END
+EventTypeService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DBMANAGER/!svn/ver/64/BOTACORE/CORE/CORE/Services/Impl/EventTypeService.cs
+END
+Services.cd
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Services/Impl/Services.cd
+END
+Configuration.cs
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/DBMANAGER/!svn/ver/20/BOTACORE/CORE/CORE/Services/Impl/Configuration.cs
+END
+SSPStaffService.cs
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/DBMANAGER/!svn/ver/229/BOTACORE/CORE/CORE/Services/Impl/SSPStaffService.cs
+END

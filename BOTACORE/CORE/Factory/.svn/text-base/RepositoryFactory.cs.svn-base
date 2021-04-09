@@ -1,0 +1,85 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using StructureMap;
+using BOTACORE.CORE.DataAccess;
+using BOTACORE.CORE.DataAccess.Impl;
+
+namespace BOTACORE.CORE
+{
+    //RepositoryFactory is just a Wrapper or a Capsul that Encapsulates StructureMap.
+    //a new instance of AccountRepository returned in every call by StructureMap!
+    public class RepositoryFactory
+    {
+        //TODO: Use this for a real WRAP UP OF STRUCTURE MAP or CommonServiceLocator project on codeplex
+        //http://blog.noobtech.com/index.php/2010/02/decoupling-application-code-from-ioc-implementation/
+
+        public static IAccountRepository AccountRepository()
+        {
+            return ObjectFactory.GetInstance<IAccountRepository>(); // ObjectFactory.GetInstance<IAccountRepository>();
+        }
+
+        public static IEventTypeRepository EventTypeRepository()
+        {
+            return ObjectFactory.GetInstance<IEventTypeRepository>();
+        }
+
+        public static IIndicatorRepository IndicatorRepository()
+        {
+            return ObjectFactory.GetInstance<IIndicatorRepository>();
+        }
+
+        public static IProjectEventRepository ProjectEventRepository()
+        {
+            return ObjectFactory.GetInstance<IProjectEventRepository>();
+        }
+
+        public static IProposalRepository ProposalRepository()
+        {
+            return ObjectFactory.GetInstance<IProposalRepository>();
+        }
+
+
+        public static IOrganizationRepository OrganizationRepository()
+        {
+            return ObjectFactory.GetInstance<IOrganizationRepository>();
+        }
+
+        public static ISSPStaffRepository SSPStaffRepository()
+        {
+            return ObjectFactory.GetInstance<ISSPStaffRepository>();
+        }
+
+        public static ITemplateRepository TemplateRepository()
+        {
+            return ObjectFactory.GetInstance<ITemplateRepository>();
+        }
+
+        public static IGrantTypeListRepository GrantTypeListRepository()
+        {
+            return ObjectFactory.GetInstance<IGrantTypeListRepository>();
+        }
+
+        /*
+        public static class ObjF
+        {
+            public static T Get<T>()
+            {
+                //IAccountRepository  accrep = new AccountRepository();
+                return ObjectFactory.GetInstance<T>();  // return (T)accrep;
+            }
+
+            public static T Get<T>(Type type)
+            {
+
+
+                return ObjectFactory.With(type).GetInstance<T>();
+
+
+            }
+        }
+         */
+
+    }
+}

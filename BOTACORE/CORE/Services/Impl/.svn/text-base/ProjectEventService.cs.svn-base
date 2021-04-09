@@ -1,0 +1,72 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using BOTACORE.CORE.Domain;
+using BOTACORE.CORE.Impl;
+using BOTACORE.CORE.DataAccess;
+
+namespace BOTACORE.CORE.Services.Impl
+{
+    public class ProjectEventService:IProjectEventService
+    {
+        private IProjectEventRepository _rep;
+        public ProjectEventService()
+        {
+            _rep = RepositoryFactory.ProjectEventRepository();
+        }
+        public IEnumerable<ProjectEvent> GetProjectEventList(int ProjectID)
+        {
+            return _rep.GetProjectEventList(ProjectID);
+        }
+        public ProjectEvent GetProjectEvent(int EventID)
+        {
+            return _rep.GetProjectEvent(EventID);
+        }
+
+
+        public bool Insert(ProjectEvent item)
+        {
+            return _rep.Insert(item);
+        }
+
+        public bool Update(ProjectEvent item)
+        {
+            return _rep.Update(item);
+        }
+
+        public bool Delete(int EventID)
+        {
+            return _rep.Delete(EventID);
+        }
+
+        public int InsertDocument(ProjectEventDocument item, int EventID)
+        {
+            return _rep.InsertDocument(item, EventID);
+        }
+        public bool DeleteDocument(int DocumentID, int EventID)
+        {
+            return _rep.DeleteDocument(DocumentID, EventID);
+        }
+        public ProjectEventDocument GetProjectEventDocument(int DocumentID)
+        {
+            return _rep.GetProjectEventDocument(DocumentID);
+        }
+        public bool UpdateProjectEventDocument(ProjectEventDocument item)
+        {
+            return _rep.UpdateProjectEventDocument(item);
+        }
+        public IEnumerable<ProjectEvent> GetProjectEventListScheduled(int ProjectID)
+        {
+            return _rep.GetProjectEventListScheduled(ProjectID);
+        }
+        public IEnumerable<ProjectEvent> GetProjectEventListScheduled()
+        {
+            return _rep.GetProjectEventListScheduled();
+        }
+        public IEnumerable<ProjectEvent> GetProjectEventListScheduledMy(int UserID)
+        {
+            return _rep.GetProjectEventListScheduledMy(UserID);
+        }
+    }
+}
